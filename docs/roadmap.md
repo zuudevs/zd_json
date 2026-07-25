@@ -1,0 +1,130 @@
+# Roadmap
+
+## v0.1.0 Project Foundation
+
+* [x] Initialize project structure
+* [x] Configure CMake
+* [x] Integrate vcpkg
+* [x] Configure Clang/LLVM toolchain
+* [x] Add clang-format
+* [x] Add clang-tidy
+* [x] Configure sanitizers
+* [x] Configure code coverage
+* [ ] Configure GitHub Actions
+
+---
+
+## v0.2.0 Core
+
+* [ ] Implement `ErrorCode`
+* [ ] Implement `Error`
+* [ ] Implement `Result<T>` using `std::expected`
+* [ ] Implement version information
+* [ ] Design public API
+
+---
+
+## v0.3.0 Lexer
+
+* [ ] Structural character scanner
+* [ ] Parse string tokens
+* [ ] Parse number tokens
+* [ ] Parse boolean tokens
+* [ ] Parse null tokens
+* [ ] UTF-8 validation
+
+---
+
+## v0.4.0 DOM
+
+* [ ] Implement `Value`
+* [ ] Implement `Array`
+* [ ] Implement `Object`
+* [ ] Implement `Document`
+
+---
+
+## v0.5.0 Parser
+
+* [ ] Parse objects
+* [ ] Parse arrays
+* [ ] Parse strings
+* [ ] Parse numbers
+* [ ] Parse literals (`true`, `false`, `null`)
+* [ ] Improve parser diagnostics
+
+---
+
+## v0.6.0 Serializer
+
+* [ ] Compact JSON writer
+* [ ] Pretty JSON writer
+
+---
+
+## v0.7.0 Testing
+
+* [ ] Unit tests
+* [ ] Integration tests
+* [ ] Fuzz testing
+
+---
+
+## v0.8.0 Benchmark
+
+* [ ] Integrate Google Benchmark
+* [ ] Add parsing benchmarks
+* [ ] Add serialization benchmarks
+* [ ] Add DOM benchmarks
+* [ ] Benchmark against real-world datasets
+
+---
+
+## v0.9.0 Benchmark Reporter
+
+* [ ] Save benchmark history
+* [ ] Compare benchmark results
+* [ ] Detect performance regression
+* [ ] Generate Markdown report
+* [ ] Generate charts
+
+---
+
+## v0.10.0 Performance
+
+* [ ] Reduce memory allocations
+* [ ] Optimize string parsing
+* [ ] Optimize number parsing
+* [ ] Optimize UTF-8 validation
+
+---
+
+## v0.11.0 Documentation
+
+* [ ] API documentation
+* [ ] Architecture guide
+* [ ] Benchmark guide
+* [ ] Examples
+
+---
+
+## v1.0.0 Stable Release
+
+- [ ] Public API stabilization
+- [ ] Complete test coverage
+- [ ] Performance baseline established
+- [ ] Documentation completed
+- [ ] Cross-platform validation
+- [ ] First stable release
+
+---
+
+## Future
+
+* [ ] Add SIMD backend
+* [ ] On-Demand API
+* [ ] SAX parser
+* [ ] JSON Pointer (RFC 6901)
+* [ ] JSON Patch (RFC 6902)
+* [ ] Custom allocator
+* [ ] C++ Modules
