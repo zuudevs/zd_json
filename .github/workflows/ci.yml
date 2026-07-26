@@ -82,4 +82,4 @@ jobs:
 
       - name: Run Benchmarks (Smoke Test)
         if: matrix.build_type == 'Release'
-        run: ./out/bin/zd_json_benchmarks --benchmark_min_time=0.01s
+        run: ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
