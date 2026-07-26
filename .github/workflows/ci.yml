@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "benchmarks/**"
@@ -20,6 +21,7 @@ on:
       - refactor/**
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "benchmarks/**"
@@ -87,4 +89,6 @@ jobs:
 
       - name: Benchmark Smoke Test
         if: matrix.benchmarks == 'ON'
-        run: ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
+        run: |
+          ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
+          ./out/bin/zd_json_lexer_benchmarks --benchmark_min_time=0.01s

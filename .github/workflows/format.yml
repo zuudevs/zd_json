@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "benchmarks/**"
@@ -21,6 +22,7 @@ on:
       - refactor/**
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "benchmarks/**"

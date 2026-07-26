@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "cmake/**"
@@ -19,6 +20,7 @@ on:
       - refactor/**
     paths:
       - "include/**"
+      - "internal/**"
       - "src/**"
       - "tests/**"
       - "cmake/**"
