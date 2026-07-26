@@ -6,6 +6,7 @@ project(
     LANGUAGES C CXX
 )
 
+include(cmake/version.cmake)
 include(cmake/project.cmake)
 include(cmake/options.cmake)
 include(cmake/output.cmake)

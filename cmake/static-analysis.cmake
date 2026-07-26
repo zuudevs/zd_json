@@ -13,7 +13,7 @@ if(ZD_JSON_ENABLE_STATIC_ANALYSIS AND CLANG_TIDY_EXE)
     )
 
     add_custom_target(tidy-check
-        COMMAND ${CLANG_TIDY_EXE} -p=${CMAKE_BINARY_DIR} --warnings-as-errors=* ${ALL_SOURCE_FILES}
+        COMMAND ${CLANG_TIDY_EXE} -p=${CMAKE_BINARY_DIR} "--header-filter=${CMAKE_SOURCE_DIR}/.*" "--warnings-as-errors=${CMAKE_SOURCE_DIR}/.*" ${ALL_SOURCE_FILES}
         COMMENT "Checking source files with clang-tidy"
     )
 endif()

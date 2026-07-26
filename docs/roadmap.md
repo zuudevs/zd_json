@@ -16,8 +16,8 @@
 
 ## v0.2.0 Core
 
-* [ ] Implement `ErrorCode`
-* [ ] Implement `Error`
+* [x] Implement `ErrorCode`
+* [x] Implement `Error`
 * [ ] Implement `Result<T>` using `std::expected`
 * [ ] Implement version information
 * [ ] Design public API

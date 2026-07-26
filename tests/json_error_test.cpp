@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstring>
 #include <zd_json/json_error.hpp>
+#include <zd_json/version.hpp>
 
 int
     main() {
@@ -39,6 +40,11 @@ int
                        "Object keys must be double-quoted strings") == 0);
     assert(std::strcmp(to_string(JsonErrc::Unknown), "Unknown JSON error") == 0);
     assert(std::strcmp(to_string(static_cast<JsonErrc>(255)), "Unknown JSON error") == 0);
+
+    assert(std::strcmp(zuu::zd_json_version, "0.2.0") == 0);
+    assert(zuu::zd_json_version_major == 0);
+    assert(zuu::zd_json_version_minor == 2);
+    assert(zuu::zd_json_version_patch == 0);
 
     return 0;
 }

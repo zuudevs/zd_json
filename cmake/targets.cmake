@@ -35,7 +35,10 @@ if(ZD_JSON_BUILD_TESTS)
     )
 
     target_link_libraries(zd_json_tests PRIVATE zd_json::zd_json)
-    target_include_directories(zd_json_tests PRIVATE "${CMAKE_SOURCE_DIR}/include")
+    target_include_directories(zd_json_tests PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_BINARY_DIR}/include"
+    )
 
     zd_json_enable_warnings(zd_json_tests)
     zd_json_enable_sanitizers(zd_json_tests)
