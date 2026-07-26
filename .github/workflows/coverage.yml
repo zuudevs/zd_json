@@ -1,0 +1,63 @@
+name: Coverage
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/coverage.yml"
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - fix/**
+      - refactor/**
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/coverage.yml"
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    env:
+      CC: clang
+      CXX: clang++
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 20
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DZD_JSON_ENABLE_COVERAGE=ON \
+            -DZD_JSON_BUILD_TESTS=ON \
+            -DZD_JSON_BUILD_BENCHMARKS=OFF
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure

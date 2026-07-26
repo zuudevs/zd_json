@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "benchmarks/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/**"
+
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - fix/**
+      - refactor/**
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "benchmarks/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/**"
+
+jobs:
+  build:
+    name: "Build (${{ matrix.build_type }}, Sanitizers: ${{ matrix.sanitizers }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - build_type: Release
+            sanitizers: "OFF"
+            clang_tidy: "ON"
+          - build_type: Debug
+            sanitizers: "ON"
+            clang_tidy: "OFF"
+
+    env:
+      CC: clang
+      CXX: clang++
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 20
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DZD_JSON_BUILD_TESTS=ON \
+            -DZD_JSON_BUILD_BENCHMARKS=OFF \
+            -DZD_JSON_ENABLE_CLANG_TIDY=${{ matrix.clang_tidy }} \
+            -DZD_JSON_ENABLE_SANITIZERS=${{ matrix.sanitizers }}
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure

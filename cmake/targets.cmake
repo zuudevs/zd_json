@@ -4,7 +4,7 @@ add_library(${ZD_JSON_LIBRARY_TARGET})
 
 target_sources(${ZD_JSON_LIBRARY_TARGET}
     PRIVATE
-        # "${CMAKE_SOURCE_DIR}/src/_.cpp"
+        "${CMAKE_SOURCE_DIR}/src/init.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
@@ -31,9 +31,7 @@ add_library(zd_json::zd_json ALIAS ${ZD_JSON_LIBRARY_TARGET})
 
 if(ZD_JSON_BUILD_TESTS)
     add_executable(zd_json_tests
-        "${CMAKE_SOURCE_DIR}/tests/main.cpp"
-        "${CMAKE_SOURCE_DIR}/tests/parser_test.cpp"
-        "${CMAKE_SOURCE_DIR}/tests/value_test.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/init.cpp"
     )
 
     target_link_libraries(zd_json_tests PRIVATE zd_json::zd_json)
@@ -54,8 +52,7 @@ endif()
 
 if(ZD_JSON_BUILD_BENCHMARKS)
     add_executable(zd_json_benchmarks
-        "${CMAKE_SOURCE_DIR}/tests/parser_benchmark.cpp"
-        "${CMAKE_SOURCE_DIR}/tests/value_benchmark.cpp"
+        "${CMAKE_SOURCE_DIR}/benchmarks/init.cpp"
     )
 
     target_link_libraries(zd_json_benchmarks PRIVATE

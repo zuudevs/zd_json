@@ -1,0 +1,60 @@
+name: Format
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "benchmarks/**"
+      - "example/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/format.yml"
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - fix/**
+      - refactor/**
+    paths:
+      - "include/**"
+      - "src/**"
+      - "tests/**"
+      - "benchmarks/**"
+      - "example/**"
+      - "cmake/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/format.yml"
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 20
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DZD_JSON_ENABLE_CLANG_FORMAT=ON \
+            -DZD_JSON_BUILD_TESTS=OFF \
+            -DZD_JSON_BUILD_BENCHMARKS=OFF \
+            -DZD_JSON_BUILD_EXAMPLES=OFF
+
+      - name: Run format-check target
+        run: cmake --build build --target format-check
