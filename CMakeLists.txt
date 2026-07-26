@@ -10,19 +10,19 @@ include(cmake/project.cmake)
 include(cmake/options.cmake)
 include(cmake/output.cmake)
 
-include(cmake/targets.cmake)
-
-include(cmake/compiler-warning.cmake)
+include(cmake/warnings.cmake)
 include(cmake/optimization.cmake)
+include(cmake/sanitizers.cmake)
+include(cmake/coverage.cmake)
 
 include(cmake/clang-format.cmake)
 include(cmake/clang-tidy.cmake)
+include(cmake/static-analysis.cmake)
 
 include(cmake/testing.cmake)
 include(cmake/benchmark.cmake)
 
-include(cmake/coverage.cmake)
-include(cmake/sanitizer.cmake)
+include(cmake/targets.cmake)
 
 message(STATUS "Project Name    : ${PROJECT_NAME}")
 message(STATUS "Version         : ${PROJECT_VERSION}")
