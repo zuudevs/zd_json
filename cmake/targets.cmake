@@ -5,6 +5,7 @@ add_library(${ZD_JSON_LIBRARY_TARGET})
 target_sources(${ZD_JSON_LIBRARY_TARGET}
     PRIVATE
         "${CMAKE_SOURCE_DIR}/src/lexer/tokenizer.cpp"
+        "${CMAKE_SOURCE_DIR}/src/lexer/lexer.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
@@ -74,6 +75,28 @@ if(ZD_JSON_BUILD_TESTS)
     endif()
 
     add_test(NAME zd_json_tokenizer_test COMMAND zd_json_tokenizer_test)
+
+    add_executable(zd_json_lexer_test
+        "${CMAKE_SOURCE_DIR}/tests/json_lexer_test.cpp"
+    )
+
+    target_link_libraries(zd_json_lexer_test PRIVATE zd_json::zd_json)
+    target_include_directories(zd_json_lexer_test PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_SOURCE_DIR}/internal"
+    )
+
+    zd_json_enable_warnings(zd_json_lexer_test)
+    zd_json_enable_sanitizers(zd_json_lexer_test)
+    zd_json_enable_coverage(zd_json_lexer_test)
+
+    if(CLANG_TIDY_EXE)
+        set_target_properties(zd_json_lexer_test PROPERTIES
+            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        )
+    endif()
+
+    add_test(NAME zd_json_lexer_test COMMAND zd_json_lexer_test)
 endif()
 
 if(ZD_JSON_BUILD_BENCHMARKS)
@@ -95,6 +118,28 @@ if(ZD_JSON_BUILD_BENCHMARKS)
 
     if(CLANG_TIDY_EXE)
         set_target_properties(zd_json_tokenizer_benchmarks PROPERTIES
+            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        )
+    endif()
+
+    add_executable(zd_json_lexer_benchmarks
+        "${CMAKE_SOURCE_DIR}/benchmarks/json_lexer_benchmark.cpp"
+    )
+
+    target_link_libraries(zd_json_lexer_benchmarks PRIVATE
+        zd_json::zd_json
+        benchmark::benchmark
+    )
+    target_include_directories(zd_json_lexer_benchmarks PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_SOURCE_DIR}/internal"
+    )
+
+    zd_json_enable_warnings(zd_json_lexer_benchmarks)
+    zd_json_enable_release_optimizations(zd_json_lexer_benchmarks)
+
+    if(CLANG_TIDY_EXE)
+        set_target_properties(zd_json_lexer_benchmarks PROPERTIES
             CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
         )
     endif()
