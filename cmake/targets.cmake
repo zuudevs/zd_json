@@ -31,7 +31,7 @@ add_library(zd_json::zd_json ALIAS ${ZD_JSON_LIBRARY_TARGET})
 
 if(ZD_JSON_BUILD_TESTS)
     add_executable(zd_json_tests
-        "${CMAKE_SOURCE_DIR}/tests/init.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/json_error_test.cpp"
     )
 
     target_link_libraries(zd_json_tests PRIVATE zd_json::zd_json)
