@@ -70,7 +70,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             -DZD_JSON_BUILD_TESTS=ON \
-            -DZD_JSON_BUILD_BENCHMARKS=OFF \
+            -DZD_JSON_BUILD_BENCHMARKS=ON \
             -DZD_JSON_ENABLE_CLANG_TIDY=${{ matrix.clang_tidy }} \
             -DZD_JSON_ENABLE_SANITIZERS=${{ matrix.sanitizers }}
 
@@ -79,3 +79,7 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+      - name: Run Benchmarks (Smoke Test)
+        if: matrix.build_type == 'Release'
+        run: ./out/bin/zd_json_benchmarks --benchmark_min_time=0.01s

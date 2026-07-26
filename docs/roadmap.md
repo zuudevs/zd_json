@@ -19,14 +19,14 @@
 * [x] Implement `ErrorCode`
 * [x] Implement `Error`
 * [ ] Implement `Result<T>` using `std::expected`
-* [ ] Implement version information
+* [x] Implement version information
 * [ ] Design public API
 
 ---
 
 ## v0.3.0 Lexer
 
-* [ ] Structural character scanner
+* [x] Structural character scanner
 * [ ] Parse string tokens
 * [ ] Parse number tokens
 * [ ] Parse boolean tokens

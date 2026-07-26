@@ -10,7 +10,7 @@ on:
       - "tests/**"
       - "cmake/**"
       - "CMakeLists.txt"
-      - ".github/workflows/coverage.yml"
+      - ".github/workflows/**"
   pull_request:
     branches:
       - main
@@ -23,7 +23,7 @@ on:
       - "tests/**"
       - "cmake/**"
       - "CMakeLists.txt"
-      - ".github/workflows/coverage.yml"
+      - ".github/workflows/**"
 
 jobs:
   coverage:
