@@ -1,6 +1,6 @@
 {
-    "name": "zd_json",
-    "version": "0.3.0",
+    "name": "@PROJECT_NAME@",
+    "version": "@PROJECT_VERSION@",
     "builtin-baseline": "40f3c709db80acf154ac4b17a1f83c564ebd022e",
     "dependencies": [
         "benchmark",

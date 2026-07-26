@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "include/**"
       - "src/**"
@@ -30,18 +29,24 @@ on:
 
 jobs:
   build:
-    name: "Build (${{ matrix.build_type }}, Sanitizers: ${{ matrix.sanitizers }})"
+    name: "${{ matrix.name }}"
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
         include:
-          - build_type: Release
-            sanitizers: "OFF"
-            clang_tidy: "ON"
-          - build_type: Debug
-            sanitizers: "ON"
-            clang_tidy: "OFF"
+          - name: "Debug + ASan/UBSan"
+            build_type: Debug
+            sanitizers: ON
+            clang_tidy: OFF
+            benchmarks: OFF
+
+          - name: "Release + Benchmark"
+            build_type: Release
+            sanitizers: OFF
+            clang_tidy: ON
+            benchmarks: ON
 
     env:
       CC: clang
@@ -70,7 +75,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             -DZD_JSON_BUILD_TESTS=ON \
-            -DZD_JSON_BUILD_BENCHMARKS=OFF \
+            -DZD_JSON_BUILD_BENCHMARKS=${{ matrix.benchmarks }} \
             -DZD_JSON_ENABLE_CLANG_TIDY=${{ matrix.clang_tidy }} \
             -DZD_JSON_ENABLE_SANITIZERS=${{ matrix.sanitizers }}
 
@@ -79,3 +84,7 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+      - name: Benchmark Smoke Test
+        if: matrix.benchmarks == 'ON'
+        run: ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
