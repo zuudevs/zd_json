@@ -1,4 +1,5 @@
 // zd_json library initialization
 namespace zd_json {
-void init() {}
+void
+    init() {}
 } // namespace zd_json
