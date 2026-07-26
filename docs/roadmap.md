@@ -10,7 +10,7 @@
 * [x] Add clang-tidy
 * [x] Configure sanitizers
 * [x] Configure code coverage
-* [ ] Configure GitHub Actions
+* [x] Configure GitHub Actions
 
 ---
 
