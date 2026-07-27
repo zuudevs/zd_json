@@ -19,8 +19,8 @@
 namespace zuu::lexer {
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 class Token {
   public:

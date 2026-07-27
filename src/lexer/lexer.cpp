@@ -50,7 +50,8 @@ ScanResult
     size_t idx = start + 1;
     while (idx < end) {
         const char character = input[idx];
-        const uint8_t char_class = constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(character)];
+        const uint8_t char_class =
+            constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(character)];
         if (char_class == static_cast<uint8_t>(enums::CharClass::Numeric)) {
             ++idx;
         } else if (char_class == static_cast<uint8_t>(enums::CharClass::Dot)) {
@@ -79,9 +80,9 @@ ScanResult
 
 void
     ProcessRange(std::string_view input,
-                  size_t start,
-                  size_t end,
-                  std::vector<Value>& values) noexcept {
+                 size_t start,
+                 size_t end,
+                 std::vector<Value>& values) noexcept {
     if (start >= end) {
         return;
     }
@@ -89,8 +90,8 @@ void
     // Skip leading whitespace only (LUT != 255). Each scan_* helper below
     // finds its own value's end by scanning forward, so no backward trim
     // over the same bytes is needed afterwards.
-    while (start < end &&
-           constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(input[start])] == constants::kUint8Max) {
+    while (start < end && constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(input[start])] ==
+                              constants::kUint8Max) {
         ++start;
     }
 
@@ -98,7 +99,8 @@ void
         return;
     }
 
-    const uint8_t char_class = constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(input[start])];
+    const uint8_t char_class =
+        constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(input[start])];
     const char* const begin_ptr = input.data() + start;
 
     if (char_class == static_cast<uint8_t>(enums::CharClass::Quote)) {

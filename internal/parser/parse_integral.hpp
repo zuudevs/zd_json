@@ -16,8 +16,8 @@
 #include <expected>
 
 #include "constants/common.hpp"
-#include "constants/swar.hpp"
 #include "constants/lookups/power_10_lookup.hpp"
+#include "constants/swar.hpp"
 #include "zd_json/json_error.hpp"
 
 namespace zuu::parser {
@@ -70,7 +70,8 @@ namespace zuu::parser {
             d = (d & 0x0000FFFF0000FFFFULL) * 10000 +
                 ((d >> constants::kUint32Len) & 0x0000FFFF0000FFFFULL);
 
-            value = value * constants::lookups::kIntegralPower10Lookup[valid_len] + static_cast<uint32_t>(d);
+            value = value * constants::lookups::kIntegralPower10Lookup[valid_len] +
+                    static_cast<uint32_t>(d);
             first += valid_len;
             break;
         }

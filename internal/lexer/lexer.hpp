@@ -14,9 +14,9 @@
 #include <string_view>
 #include <vector>
 
+#include "scan_result.hpp"
 #include "token.hpp"
 #include "value.hpp"
-#include "scan_result.hpp"
 
 namespace zuu::lexer {
 
@@ -75,9 +75,9 @@ namespace zuu::lexer {
  */
 void
     ProcessRange(std::string_view input,
-                  size_t start,
-                  size_t end,
-                  std::vector<Value>& values) noexcept;
+                 size_t start,
+                 size_t end,
+                 std::vector<Value>& values) noexcept;
 
 /**
  * @brief Converts structural tokens into JSON values.

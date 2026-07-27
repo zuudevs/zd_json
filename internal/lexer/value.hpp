@@ -17,8 +17,8 @@
 namespace zuu::lexer {
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 struct Value {
     enums::JsonType type;

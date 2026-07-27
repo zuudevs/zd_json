@@ -14,8 +14,8 @@
 #include "constants/common.hpp"
 #include "constants/lookups/token_type_lookup.hpp"
 #include "enums/token_type.hpp"
-#include "lexer/tokenizer.hpp"
 #include "lexer/token.hpp"
+#include "lexer/tokenizer.hpp"
 
 namespace zuu::lexer {
 
@@ -55,7 +55,8 @@ std::vector<Token>
             continue;
         }
 
-        const auto token_type_byte = constants::lookups::kTokenTypeLookup[static_cast<uint8_t>(character)];
+        const auto token_type_byte =
+            constants::lookups::kTokenTypeLookup[static_cast<uint8_t>(character)];
         if (token_type_byte != constants::kUint8Max) {
             result.push_back({static_cast<enums::TokenType>(token_type_byte),
                               static_cast<uint64_t>(ptr - begin)});
