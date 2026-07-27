@@ -41,8 +41,8 @@ namespace zuu::parser {
         uint64_t block{};
         std::memcpy(&block, first, sizeof(block));
 
-        uint64_t val = block - constants::kSwar8Zero;
-        uint64_t non_digits = ((val + constants::kSwar8DigitBias) | val) & constants::kSwar8Msb;
+        uint64_t val = block - constants::kSwarZero;
+        uint64_t non_digits = ((val + constants::kSwarDigitBias) | val) & constants::kSwarMsb;
 
         if (non_digits == 0) [[likely]] {
             has_digits = true;

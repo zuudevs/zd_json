@@ -10,10 +10,15 @@
 
 #pragma once
 
-#include <cstddef>
 #include <cstdint>
 
 namespace zuu::constants {
+
+#ifdef __AVX2__
+constexpr uint8_t kBlockSize = 16;
+#else
+constexpr uint8_t kBlockSize = 8;
+#endif
 
 constexpr uint8_t kUint8Max = 255;
 constexpr uint8_t kUint8Len = 8;

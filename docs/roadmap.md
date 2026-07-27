@@ -27,11 +27,11 @@
 ## v0.3.0 Lexer
 
 * [x] Structural character scanner
-* [ ] Parse string tokens
-* [ ] Parse number tokens
-* [ ] Parse boolean tokens
-* [ ] Parse null tokens
-* [ ] UTF-8 validation
+* [x] Parse string tokens
+* [x] Parse number tokens
+* [x] Parse boolean tokens
+* [x] Parse null tokens
+* [x] UTF-8 validation
 
 ---
 
