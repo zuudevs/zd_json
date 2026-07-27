@@ -100,6 +100,29 @@ if(ZD_JSON_BUILD_TESTS)
 
     add_test(NAME zd_json_lexer_test COMMAND zd_json_lexer_test)
     set_tests_properties(zd_json_lexer_test PROPERTIES LABELS "lexer")
+
+	add_executable(zd_json_parser_test
+        "${CMAKE_SOURCE_DIR}/tests/json_parser_test.cpp"
+    )
+
+    target_link_libraries(zd_json_parser_test PRIVATE zd_json::zd_json)
+    target_include_directories(zd_json_parser_test PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_SOURCE_DIR}/internal"
+    )
+
+    zd_json_enable_warnings(zd_json_parser_test)
+    zd_json_enable_sanitizers(zd_json_parser_test)
+    zd_json_enable_coverage(zd_json_parser_test)
+
+    if(CLANG_TIDY_EXE)
+        set_target_properties(zd_json_parser_test PROPERTIES
+            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        )
+    endif()
+
+    add_test(NAME zd_json_parser_test COMMAND zd_json_parser_test)
+    set_tests_properties(zd_json_parser_test PROPERTIES LABELS "parser")
 endif()
 
 if(ZD_JSON_BUILD_BENCHMARKS)
@@ -143,6 +166,28 @@ if(ZD_JSON_BUILD_BENCHMARKS)
 
     if(CLANG_TIDY_EXE)
         set_target_properties(zd_json_lexer_benchmarks PROPERTIES
+            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        )
+    endif()
+
+	add_executable(zd_json_parser_benchmarks
+        "${CMAKE_SOURCE_DIR}/benchmarks/json_parser_benchmark.cpp"
+    )
+
+    target_link_libraries(zd_json_parser_benchmarks PRIVATE
+        zd_json::zd_json
+        benchmark::benchmark
+    )
+    target_include_directories(zd_json_parser_benchmarks PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_SOURCE_DIR}/internal"
+    )
+
+    zd_json_enable_warnings(zd_json_parser_benchmarks)
+    zd_json_enable_release_optimizations(zd_json_parser_benchmarks)
+
+    if(CLANG_TIDY_EXE)
+        set_target_properties(zd_json_parser_benchmarks PROPERTIES
             CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
         )
     endif()

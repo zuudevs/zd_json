@@ -12,6 +12,7 @@
 
 #include <bit>
 #include <cstdint>
+#include <cstring>
 #include <expected>
 
 #include "constants/common.hpp"
@@ -36,9 +37,9 @@ namespace zuu::parser {
         ++first;
     }
 
-    while (first + 8 <= last) {
+    while (first + constants::kUint8Len <= last) {
         uint64_t block{};
-        std::memcpy(&block, first, constants::kUint8Max);
+        std::memcpy(&block, first, sizeof(block));
 
         uint64_t val = block - constants::kSwar8Zero;
         uint64_t non_digits = ((val + constants::kSwar8DigitBias) | val) & constants::kSwar8Msb;
@@ -52,7 +53,7 @@ namespace zuu::parser {
             d = (d & 0x0000FFFF0000FFFFULL) * 10000 +
                 ((d >> constants::kUint32Len) & 0x0000FFFF0000FFFFULL);
             value = value * 100000000ULL + static_cast<uint32_t>(d);
-            first += 8;
+            first += constants::kUint8Len;
         } else {
             uint32_t valid_len = std::countr_zero(non_digits) >> 3;
             if (valid_len == 0) {

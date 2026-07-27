@@ -35,6 +35,9 @@ namespace zuu::parser {
     int32_t digits{};
 
     while (ptr != last && *ptr != '.' && *ptr != 'e' && *ptr != 'E') {
+        if (static_cast<uint8_t>(*ptr - constants::kCharZero) >= constants::kDigit) {
+            return std::unexpected{JsonErrc::InvalidFormat};
+        }
         mantissa = mantissa * constants::kDigit + (*ptr - constants::kCharZero);
         digits++;
         ++ptr;
@@ -43,6 +46,9 @@ namespace zuu::parser {
     if (ptr != last && *ptr == '.') {
         ++ptr;
         while (ptr != last && *ptr != 'e' && *ptr != 'E') {
+            if (static_cast<uint8_t>(*ptr - constants::kCharZero) >= constants::kDigit) {
+                return std::unexpected{JsonErrc::InvalidFormat};
+            }
             mantissa = mantissa * constants::kDigit + (*ptr - constants::kCharZero);
             decimal_shift--;
             digits++;
@@ -52,14 +58,29 @@ namespace zuu::parser {
 
     if (ptr != last && (*ptr == 'e' || *ptr == 'E')) {
         ++ptr;
+        if (ptr == last) {
+            return std::unexpected{JsonErrc::InvalidFormat};
+        }
         bool exp_negative = (*ptr == constants::kCharNegative);
         ptr += (exp_negative || *ptr == constants::kCharPositive);
         int32_t exponent{};
+        bool has_exp_digits{};
         while (ptr != last) {
+            if (static_cast<uint8_t>(*ptr - constants::kCharZero) >= constants::kDigit) {
+                return std::unexpected{JsonErrc::InvalidFormat};
+            }
+            has_exp_digits = true;
             exponent = exponent * constants::kDigit + (*ptr - constants::kCharZero);
             ++ptr;
         }
+        if (!has_exp_digits) {
+            return std::unexpected{JsonErrc::InvalidFormat};
+        }
         decimal_shift += exp_negative ? -exponent : exponent;
+    }
+
+    if (digits == 0) {
+        return std::unexpected{JsonErrc::InvalidFormat};
     }
 
     if (digits <= 19 && mantissa <= 9007199254740991ULL && decimal_shift >= -22 &&
@@ -68,7 +89,7 @@ namespace zuu::parser {
 
         if (decimal_shift > 0) {
             result *= lookups::kFloatPower10PosLookup[decimal_shift];
-        } else if (decimal_shift > 0) {
+        } else if (decimal_shift < 0) {
             result *= lookups::kFloatPower10NegLookup[-decimal_shift];
         }
 
