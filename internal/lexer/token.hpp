@@ -16,8 +16,12 @@
 
 #include "enums/token_type.hpp"
 
-namespace zuu::models {
+namespace zuu::lexer {
 
+/**
+ * @brief
+ *
+ */
 class Token {
   public:
     uint64_t type : 8;
@@ -41,4 +45,4 @@ static_assert(std::is_trivially_copyable_v<Token>, "Token must be trivially copy
 
 static_assert(std::is_standard_layout_v<Token>, "Token must have standard layout.");
 
-} // namespace zuu::models
+} // namespace zuu::lexer

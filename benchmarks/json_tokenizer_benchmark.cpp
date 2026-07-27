@@ -94,7 +94,7 @@ std::string generate_numeric_json() {
 
 static void BM_Tokenizer_SmallObject(benchmark::State& state) {
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::tokenize(kSmallJson);
+        auto tokens = zuu::lexer::Tokenize(kSmallJson);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }
@@ -106,7 +106,7 @@ static void BM_Tokenizer_SmallObject(benchmark::State& state) {
 
 static void BM_Tokenizer_MediumPayload(benchmark::State& state) {
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::tokenize(kMediumJson);
+        auto tokens = zuu::lexer::Tokenize(kMediumJson);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }
@@ -119,7 +119,7 @@ static void BM_Tokenizer_MediumPayload(benchmark::State& state) {
 static void BM_Tokenizer_LargeArray(benchmark::State& state) {
     const std::string json = generate_large_array_json();
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::tokenize(json);
+        auto tokens = zuu::lexer::Tokenize(json);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }
@@ -132,7 +132,7 @@ static void BM_Tokenizer_LargeArray(benchmark::State& state) {
 static void BM_Tokenizer_DeeplyNested(benchmark::State& state) {
     const std::string json = generate_deeply_nested_json();
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::tokenize(json);
+        auto tokens = zuu::lexer::Tokenize(json);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }
@@ -145,7 +145,7 @@ static void BM_Tokenizer_DeeplyNested(benchmark::State& state) {
 static void BM_Tokenizer_NumericHeavy(benchmark::State& state) {
     const std::string json = generate_numeric_json();
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::tokenize(json);
+        auto tokens = zuu::lexer::Tokenize(json);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }

@@ -8,7 +8,7 @@ int
     main() {
     constexpr auto json = R"({"name": "zuu", "age": 20, "skills": ["cpp", "go"]})";
 
-    const auto tokens = zuu::lexer::tokenize(json);
+    const auto tokens = zuu::lexer::Tokenize(json);
 
     assert(!tokens.empty());
 

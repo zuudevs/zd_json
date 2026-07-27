@@ -1,9 +1,9 @@
 /**
  * @file char_class.hpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Brief description
- * @version 0.3.0
- * @date 2026-07-26
+ * @brief Character classification categories used by the value lexer
+ * @version 0.3.1
+ * @date 2026-07-27
  *
  * @copyright Copyright (c) 2026
  */
@@ -15,11 +15,11 @@
 namespace zuu::enums {
 
 enum class CharClass : uint8_t {
-    Alp,
+    Alpha,
     Dot,
-    Num,
-    Sig,
-    Quo,
+    Numeric,
+    Sign,
+    Quote,
 };
 
 } // namespace zuu::enums
