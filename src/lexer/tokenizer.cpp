@@ -36,20 +36,20 @@ std::vector<Token>
 
         if (in_string) {
             // Inside a string, structural-looking characters (',', ':', etc.)
-            // are just content, not tokens. Only an unescaped '"' matters.
+            // are just content, not tokens. Only an unescaped '\"' matters.
             if (character == '\\') {
                 ++ptr; // skip the escaped character so `\"` doesn't close the string
                 if (ptr >= end) {
                     break;
                 }
-            } else if (character == '"') {
+            } else if (character == '\"') {
                 in_string = false;
             }
             ++ptr;
             continue;
         }
 
-        if (character == '"') {
+        if (character == '\"') {
             in_string = true;
             ++ptr;
             continue;

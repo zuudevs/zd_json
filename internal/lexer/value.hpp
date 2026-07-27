@@ -34,9 +34,9 @@ struct Value {
     JsonErrc error = JsonErrc::None;
 
     constexpr Value(enums::JsonType type,
-                     const char* begin,
-                     const char* end,
-                     JsonErrc error = JsonErrc::None) noexcept
+                    const char* begin,
+                    const char* end,
+                    JsonErrc error = JsonErrc::None) noexcept
         : type(type)
         , value(begin, end)
         , error(error) {}

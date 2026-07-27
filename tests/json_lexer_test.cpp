@@ -112,7 +112,9 @@ int
 
     // Invalid continuation byte after a 2-byte lead.
     {
-        constexpr auto s = "\"\xC3" "\x28" "bad\"";
+        constexpr auto s = "\"\xC3"
+                           "\x28"
+                           "bad\"";
         std::string_view sv(s);
         const auto result = zuu::lexer::ScanString(sv, 0, sv.size());
         assert(result.error == zuu::JsonErrc::InvalidUnicode);
