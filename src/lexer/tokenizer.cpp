@@ -1,9 +1,9 @@
 /**
  * @file tokenizer.cpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Brief description
- * @version 0.3.0
- * @date 2026-07-26
+ * @brief Structural tokenizer implementation using an LUT-based single pass scan
+ * @version 0.3.1
+ * @date 2026-07-27
  *
  * @copyright Copyright (c) 2026
  */
@@ -29,11 +29,36 @@ std::vector<models::Token>
     const auto* ptr = input.data();
     const auto* const end = ptr + input.size();
 
-    while (ptr != nullptr && ptr < end) {
-        auto tok = lookups::kTokenTypeLookup[static_cast<uint8_t>(*ptr)];
-        if (tok != constants::kUint8Max) {
-            result.push_back(
-                {static_cast<enums::TokenType>(tok), static_cast<uint64_t>(ptr - begin)});
+    bool in_string = false;
+
+    while (ptr < end) {
+        const char character = *ptr;
+
+        if (in_string) {
+            // Inside a string, structural-looking characters (',', ':', etc.)
+            // are just content, not tokens. Only an unescaped '"' matters.
+            if (character == '\\') {
+                ++ptr; // skip the escaped character so `\"` doesn't close the string
+                if (ptr >= end) {
+                    break;
+                }
+            } else if (character == '"') {
+                in_string = false;
+            }
+            ++ptr;
+            continue;
+        }
+
+        if (character == '"') {
+            in_string = true;
+            ++ptr;
+            continue;
+        }
+
+        const auto token_type_byte = lookups::kTokenTypeLookup[static_cast<uint8_t>(character)];
+        if (token_type_byte != constants::kUint8Max) {
+            result.push_back({static_cast<enums::TokenType>(token_type_byte),
+                              static_cast<uint64_t>(ptr - begin)});
         }
         ++ptr;
     }

@@ -1,9 +1,10 @@
 /**
  * @file tokenizer.hpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Brief description
- * @version 0.3.0
- * @date 2026-07-26
+ * @brief Structural tokenizer: scans the input for JSON structural
+ *        characters ('{', '}', '[', ']', ',', ':') and records their positions
+ * @version 0.3.1
+ * @date 2026-07-27
  *
  * @copyright Copyright (c) 2026
  */

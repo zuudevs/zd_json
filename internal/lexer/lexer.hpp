@@ -1,9 +1,10 @@
 /**
  * @file lexer.hpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Brief description
- * @version 0.3.0
- * @date 2026-07-26
+ * @brief Value lexer: extracts and classifies JSON literal values from the
+ *        input spans left between the structural tokens produced by tokenize()
+ * @version 0.3.1
+ * @date 2026-07-27
  *
  * @copyright Copyright (c) 2026
  */
@@ -20,6 +21,6 @@
 namespace zuu::lexer {
 
 [[nodiscard]] std::vector<models::Value>
-    lexer(std::string_view input, std::span<const models::Token> tokens) noexcept;
+    lex_values(std::string_view input, std::span<const models::Token> tokens) noexcept;
 
 } // namespace zuu::lexer

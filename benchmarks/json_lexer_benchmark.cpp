@@ -100,7 +100,7 @@ static void
     Lexer_SmallObject(benchmark::State& state) {
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::tokenize(kSmallJson);
-        auto values = zuu::lexer::lexer(kSmallJson, tokens);
+        auto values = zuu::lexer::lex_values(kSmallJson, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
@@ -115,7 +115,7 @@ static void
     Lexer_MediumPayload(benchmark::State& state) {
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::tokenize(kMediumJson);
-        auto values = zuu::lexer::lexer(kMediumJson, tokens);
+        auto values = zuu::lexer::lex_values(kMediumJson, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
@@ -131,7 +131,7 @@ static void
     const std::string json = generate_large_array_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::tokenize(json);
-        auto values = zuu::lexer::lexer(json, tokens);
+        auto values = zuu::lexer::lex_values(json, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
@@ -147,7 +147,7 @@ static void
     const std::string json = generate_deeply_nested_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::tokenize(json);
-        auto values = zuu::lexer::lexer(json, tokens);
+        auto values = zuu::lexer::lex_values(json, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
@@ -163,7 +163,7 @@ static void
     const std::string json = generate_numeric_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::tokenize(json);
-        auto values = zuu::lexer::lexer(json, tokens);
+        auto values = zuu::lexer::lex_values(json, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
@@ -175,10 +175,10 @@ static void
 }
 
 static void
-    LexerumPayload(benchmark::State& state) {
+    Lexer_MediumValuesOnly(benchmark::State& state) {
     const auto tokens = zuu::lexer::tokenize(kMediumJson);
     for (auto stateLoop : state) {
-        auto values = zuu::lexer::lexer(kMediumJson, tokens);
+        auto values = zuu::lexer::lex_values(kMediumJson, tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
     }
@@ -193,6 +193,6 @@ BENCHMARK(Lexer_MediumPayload);
 BENCHMARK(Lexer_LargeArray);
 BENCHMARK(Lexer_DeeplyNested);
 BENCHMARK(Lexer_NumericHeavy);
-BENCHMARK(LexerumPayload);
+BENCHMARK(Lexer_MediumValuesOnly);
 
 BENCHMARK_MAIN();

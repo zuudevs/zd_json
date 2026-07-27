@@ -1,9 +1,9 @@
 /**
- * @file value_type_lookup.hpp
+ * @file json_type_lookup.hpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Brief description
- * @version 0.3.0
- * @date 2026-07-26
+ * @brief Lookup table mapping raw bytes to their JsonType character class
+ * @version 0.3.1
+ * @date 2026-07-27
  *
  * @copyright Copyright (c) 2026
  */

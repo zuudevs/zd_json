@@ -11,7 +11,7 @@ int
         R"({"name": "zuu", "age": 20, "score": 98.5, "active": true, "extra": null, "skills": ["cpp", "go"]})";
 
     const auto tokens = zuu::lexer::tokenize(json);
-    const auto values = zuu::lexer::lexer(json, tokens);
+    const auto values = zuu::lexer::lex_values(json, tokens);
 
     assert(!values.empty());
 
@@ -79,7 +79,7 @@ int
     constexpr auto json_long =
         R"({"escaped": "hello\nworld", "long": "this_is_a_very_long_string_exceeding_sixteen_chars"})";
     const auto tokens_long = zuu::lexer::tokenize(json_long);
-    const auto values_long = zuu::lexer::lexer(json_long, tokens_long);
+    const auto values_long = zuu::lexer::lex_values(json_long, tokens_long);
 
     // "hello\nworld" has escape -> String
     assert(values_long[2].type == zuu::enums::JsonType::String);

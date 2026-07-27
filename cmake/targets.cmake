@@ -53,6 +53,7 @@ if(ZD_JSON_BUILD_TESTS)
     endif()
 
     add_test(NAME zd_json_error_test COMMAND zd_json_error_test)
+    set_tests_properties(zd_json_error_test PROPERTIES LABELS "error")
 
     add_executable(zd_json_tokenizer_test
         "${CMAKE_SOURCE_DIR}/tests/json_tokenizer_test.cpp"
@@ -75,6 +76,7 @@ if(ZD_JSON_BUILD_TESTS)
     endif()
 
     add_test(NAME zd_json_tokenizer_test COMMAND zd_json_tokenizer_test)
+    set_tests_properties(zd_json_tokenizer_test PROPERTIES LABELS "tokenizer")
 
     add_executable(zd_json_lexer_test
         "${CMAKE_SOURCE_DIR}/tests/json_lexer_test.cpp"
@@ -97,6 +99,7 @@ if(ZD_JSON_BUILD_TESTS)
     endif()
 
     add_test(NAME zd_json_lexer_test COMMAND zd_json_lexer_test)
+    set_tests_properties(zd_json_lexer_test PROPERTIES LABELS "lexer")
 endif()
 
 if(ZD_JSON_BUILD_BENCHMARKS)
