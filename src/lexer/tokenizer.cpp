@@ -12,17 +12,17 @@
 #include <cstdint>
 
 #include "constants/common.hpp"
+#include "constants/lookups/token_type_lookup.hpp"
 #include "enums/token_type.hpp"
 #include "lexer/tokenizer.hpp"
-#include "lookups/token_type_lookup.hpp"
-#include "models/token.hpp"
+#include "lexer/token.hpp"
 
 namespace zuu::lexer {
 
-std::vector<models::Token>
-    tokenize(std::string_view input) noexcept {
+std::vector<Token>
+    Tokenize(std::string_view input) noexcept {
 
-    std::vector<models::Token> result;
+    std::vector<Token> result;
     result.reserve(input.size() / constants::kEstimatedTokenCapacityDivisor);
 
     const auto* const begin = input.data();
@@ -55,7 +55,7 @@ std::vector<models::Token>
             continue;
         }
 
-        const auto token_type_byte = lookups::kTokenTypeLookup[static_cast<uint8_t>(character)];
+        const auto token_type_byte = constants::lookups::kTokenTypeLookup[static_cast<uint8_t>(character)];
         if (token_type_byte != constants::kUint8Max) {
             result.push_back({static_cast<enums::TokenType>(token_type_byte),
                               static_cast<uint64_t>(ptr - begin)});

@@ -14,12 +14,12 @@
 #include <string_view>
 #include <vector>
 
-#include "models/token.hpp"
+#include "lexer/token.hpp"
 
 namespace zuu::lexer {
 
 [[nodiscard]]
-std::vector<models::Token>
-    tokenize(std::string_view input) noexcept;
+std::vector<lexer::Token>
+    Tokenize(std::string_view input) noexcept;
 
 } // namespace zuu::lexer

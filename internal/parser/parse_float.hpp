@@ -15,7 +15,7 @@
 #include <expected>
 
 #include "constants/common.hpp"
-#include "lookups/power_10_lookup.hpp"
+#include "constants/lookups/power_10_lookup.hpp"
 #include "zd_json/json_error.hpp"
 
 namespace zuu::parser {
@@ -88,9 +88,9 @@ namespace zuu::parser {
         auto result = static_cast<double>(mantissa);
 
         if (decimal_shift > 0) {
-            result *= lookups::kFloatPower10PosLookup[decimal_shift];
+            result *= constants::lookups::kFloatPower10PosLookup[decimal_shift];
         } else if (decimal_shift < 0) {
-            result *= lookups::kFloatPower10NegLookup[-decimal_shift];
+            result *= constants::lookups::kFloatPower10NegLookup[-decimal_shift];
         }
 
         return is_negative ? -result : result;
