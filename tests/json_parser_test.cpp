@@ -18,6 +18,7 @@
 #include "parser/parse_bool.hpp"
 #include "parser/parse_float.hpp"
 #include "parser/parse_integral.hpp"
+#include "parser/parse_literal.hpp"
 #include "parser/parse_null.hpp"
 #include "parser/parse_string.hpp"
 
@@ -25,6 +26,7 @@ using zuu::JsonErrc;
 using zuu::parser::ParseBool;
 using zuu::parser::ParseFloat;
 using zuu::parser::ParseIntegral;
+using zuu::parser::ParseLiteral;
 using zuu::parser::ParseNull;
 using zuu::parser::ParseShortString;
 using zuu::parser::ParseString;
@@ -133,18 +135,24 @@ void
     test_parse_bool() {
     {
         constexpr auto s = "true";
-        const auto r = ParseBool(s, s + 4);
-        assert(r.has_value() && *r == true);
+        const auto r = ParseLiteral(s, s + 4);
+        assert(r.has_value());
+        if (auto v = static_cast<bool>(*r); *r != -1) {
+            assert(v == true);
+        }
     }
     {
         constexpr auto s = "false";
-        const auto r = ParseBool(s, s + 5);
-        assert(r.has_value() && *r == false);
+        const auto r = ParseLiteral(s, s + 5);
+        assert(r.has_value());
+        if (auto v = static_cast<bool>(*r); *r != -1) {
+            assert(v == false);
+        }
     }
 
     const char* invalid[] = {"", "tru", "True", "falze", "truee", "fals", "nulll"};
     for (auto* s : invalid) {
-        const auto r = ParseBool(s, s + std::strlen(s));
+        const auto r = ParseLiteral(s, s + std::strlen(s));
         assert(!r.has_value());
         assert(r.error() == JsonErrc::InvalidBooleanLiteral);
     }
@@ -156,15 +164,14 @@ void
     test_parse_null() {
     {
         constexpr auto s = "null";
-        const auto r = ParseNull(s, s + 4);
-        assert(r.has_value());
-        assert(*r == nullptr);
+        const auto r = ParseLiteral(s, s + 4);
+        assert(r.has_value() && *r == -1);
     }
 
     const char* invalid[] = {"", "nul", "Null", "nulll", "NULL"};
     for (auto* s : invalid) {
-        const auto r = ParseNull(s, s + std::strlen(s));
-        assert(!r.has_value());
+        const auto r = ParseLiteral(s, s + std::strlen(s));
+        assert(!r.has_value() && *r == -1);
         assert(r.error() == JsonErrc::InvalidNullLiteral);
     }
 

@@ -1,26 +1,23 @@
 /**
- * @file parse_float.hpp
+ * @file parse_literal.hpp
  * @author zuudevs (zuudevs@gmail.com)
  * @brief Brief description
  * @version 0.3.0
- * @date 2026-07-27
+ * @date 2026-07-28
  *
  * @copyright Copyright (c) 2026
  */
 
 #pragma once
 
-#include <charconv>
 #include <cstdint>
 #include <expected>
 
-#include "constants/common.hpp"
-#include "constants/lookups/power_10_lookup.hpp"
 #include "zd_json/json_error.hpp"
 
 namespace zuu::parser {
 
-[[nodiscard]] std::expected<double, JsonErrc>
-    ParseFloat(const char* first, const char* last) noexcept;
+[[nodiscard]] std::expected<int8_t, JsonErrc>
+    ParseLiteral(const char* first, const char* last) noexcept;
 
 } // namespace zuu::parser

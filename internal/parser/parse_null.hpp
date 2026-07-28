@@ -28,15 +28,7 @@ namespace zuu::parser {
  * @return `nullptr` on success, or JsonErrc::InvalidNullLiteral on
  *         malformed input.
  */
-[[nodiscard]] inline constexpr std::expected<std::nullptr_t, JsonErrc>
-    ParseNull(const char* first, const char* last) noexcept {
-    const auto len = static_cast<size_t>(last - first);
-
-    if (len == 4 && first[0] == 'n' && first[1] == 'u' && first[2] == 'l' && first[3] == 'l') {
-        return nullptr;
-    }
-
-    return std::unexpected{JsonErrc::InvalidNullLiteral};
-}
+[[nodiscard]] std::expected<std::nullptr_t, JsonErrc>
+    ParseNull(const char* first, const char* last) noexcept;
 
 } // namespace zuu::parser
