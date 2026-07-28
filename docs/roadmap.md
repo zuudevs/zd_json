@@ -57,8 +57,8 @@
 
 ## v0.6.0 Serializer
 
-* [ ] Compact JSON writer
-* [ ] Pretty JSON writer
+* [x] Compact JSON writer
+* [x] Pretty JSON writer
 
 ---
 

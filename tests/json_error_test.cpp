@@ -41,9 +41,9 @@ int
     assert(std::strcmp(to_string(JsonErrc::Unknown), "Unknown JSON error") == 0);
     assert(std::strcmp(to_string(static_cast<JsonErrc>(255)), "Unknown JSON error") == 0);
 
-    assert(std::strcmp(zuu::zd_json_version, "0.5.0") == 0);
+    assert(std::strcmp(zuu::zd_json_version, "0.6.0") == 0);
     assert(zuu::zd_json_version_major == 0);
-    assert(zuu::zd_json_version_minor == 5);
+    assert(zuu::zd_json_version_minor == 6);
     assert(zuu::zd_json_version_patch == 0);
 
     return 0;
