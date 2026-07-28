@@ -48,16 +48,27 @@ endif()
 
 add_library(zd_json::zd_json ALIAS ${ZD_JSON_LIBRARY_TARGET})
 
-function(add_test_target target_name label)
+function(add_test_target target_name src_dir)
 	if(ZD_JSON_BUILD_TESTS)
-		add_executable(zd_${target_name}
-			"${CMAKE_SOURCE_DIR}/tests/${target_name}.cpp"
+		file(GLOB TEST_SRCS
+			CONFIGURE_DEPENDS
+			"${CMAKE_CURRENT_SOURCE_DIR}/tests/${src_dir}/*.cpp"
 		)
 
-		target_link_libraries(zd_${target_name} PRIVATE zd_json::zd_json)
+		add_executable(zd_${target_name}
+			"${CMAKE_SOURCE_DIR}/tests/${target_name}.cpp"
+			"${TEST_SRCS}"
+		)
+
+		target_link_libraries(zd_${target_name} PRIVATE
+			zd_json::zd_json
+			GTest::gtest
+			GTest::gtest_main
+		)
 		target_include_directories(zd_${target_name} PRIVATE
 			"${CMAKE_SOURCE_DIR}/include"
 			"${CMAKE_SOURCE_DIR}/internal"
+			"${CMAKE_SOURCE_DIR}/tests/${src_dir}"
 		)
 
 		zd_json_enable_warnings(zd_${target_name})
@@ -66,12 +77,11 @@ function(add_test_target target_name label)
 
 		if(CLANG_TIDY_EXE)
 			set_target_properties(zd_${target_name} PROPERTIES
-				CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+				CXX_CLANG_TIDY "${CLANG_TIDY_CMD};-checks=-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-uppercase-literal-suffix,-readability-qualified-auto"
 			)
 		endif()
 
 		add_test(NAME zd_${target_name} COMMAND zd_${target_name})
-		set_tests_properties(zd_${target_name} PROPERTIES LABELS "${label}")
 	endif()
 endfunction()
 
@@ -83,8 +93,8 @@ function(add_benchmark_target target_name src_dir)
 		)
 
         add_executable(zd_${target_name}
-			"${BM_SRCS}"
             "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
+			"${BM_SRCS}"
         )
 
         target_link_libraries(zd_${target_name} PRIVATE
