@@ -33,4 +33,14 @@ constexpr char kCharPositive = '+';
 constexpr char kCharNegative = '-';
 constexpr char kCharZero = '0';
 
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+constexpr uint32_t kNullWord = 0x6c6c756e;
+constexpr uint32_t kTrueWord = 0x65757274;
+constexpr uint32_t kFalsWord = 0x736c6166;
+#else
+constexpr uint32_t kNullWord = 0x6e756c6c;
+constexpr uint32_t kTrueWord = 0x74727565;
+constexpr uint32_t kFalsWord = 0x66616c73;
+#endif
+
 } // namespace zuu::constants

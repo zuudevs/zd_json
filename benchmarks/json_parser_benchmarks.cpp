@@ -53,7 +53,8 @@ constexpr std::string_view kEscapedString = R"("line1\nline2\ttabbed\\backslash\
 constexpr std::string_view kUnicodeEscapedString = R"("caf\u00e9 \uD83D\uDE00 \u4e2d\u6587")";
 
 // Raw (non-escaped) multi-byte UTF-8, already validated by the lexer.
-constexpr std::string_view kMultibyteUtf8String = "\"caf\xC3\xA9 \xE4\xB8\xAD\xE6\x96\x87 \xF0\x9F\x98\x80\"";
+constexpr std::string_view kMultibyteUtf8String =
+    "\"caf\xC3\xA9 \xE4\xB8\xAD\xE6\x96\x87 \xF0\x9F\x98\x80\"";
 
 } // namespace
 
@@ -97,7 +98,7 @@ static void
         benchmark::DoNotOptimize(end);
 
         auto result = zuu::parser::ParseIntegral(start, end);
-		benchmark::DoNotOptimize(result);
+        benchmark::DoNotOptimize(result);
     }
     state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));
 }
@@ -201,7 +202,7 @@ static void
 
         benchmark::DoNotOptimize(res);
         benchmark::DoNotOptimize(value);
-		benchmark::ClobberMemory();
+        benchmark::ClobberMemory();
     }
     state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));
 }

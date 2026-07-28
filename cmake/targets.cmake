@@ -6,6 +6,17 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
     PRIVATE
         "${CMAKE_SOURCE_DIR}/src/lexer/tokenizer.cpp"
         "${CMAKE_SOURCE_DIR}/src/lexer/lexer.cpp"
+		"${CMAKE_SOURCE_DIR}/src/models/arena.cpp"
+        "${CMAKE_SOURCE_DIR}/src/models/value.cpp"
+        "${CMAKE_SOURCE_DIR}/src/models/array.cpp"
+        "${CMAKE_SOURCE_DIR}/src/models/object.cpp"
+        "${CMAKE_SOURCE_DIR}/src/models/document.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_bool.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_float.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_integral.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_literal.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_null.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_string.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
@@ -31,164 +42,66 @@ endif()
 
 add_library(zd_json::zd_json ALIAS ${ZD_JSON_LIBRARY_TARGET})
 
-if(ZD_JSON_BUILD_TESTS)
-    add_executable(zd_json_error_test
-        "${CMAKE_SOURCE_DIR}/tests/json_error_test.cpp"
-    )
+function(add_test_target target_name label)
+	if(ZD_JSON_BUILD_TESTS)
+		add_executable(zd_${target_name}
+			"${CMAKE_SOURCE_DIR}/tests/${target_name}.cpp"
+		)
 
-    target_link_libraries(zd_json_error_test PRIVATE zd_json::zd_json)
-    target_include_directories(zd_json_error_test PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
+		target_link_libraries(zd_${target_name} PRIVATE zd_json::zd_json)
+		target_include_directories(zd_${target_name} PRIVATE
+			"${CMAKE_SOURCE_DIR}/include"
+			"${CMAKE_SOURCE_DIR}/internal"
+		)
 
-    zd_json_enable_warnings(zd_json_error_test)
-    zd_json_enable_sanitizers(zd_json_error_test)
-    zd_json_enable_coverage(zd_json_error_test)
+		zd_json_enable_warnings(zd_${target_name})
+		zd_json_enable_sanitizers(zd_${target_name})
+		zd_json_enable_coverage(zd_${target_name})
 
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_error_test PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+		if(CLANG_TIDY_EXE)
+			set_target_properties(zd_${target_name} PROPERTIES
+				CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+			)
+		endif()
+
+		add_test(NAME zd_${target_name} COMMAND zd_${target_name})
+		set_tests_properties(zd_${target_name} PROPERTIES LABELS "${label}")
+	endif()
+endfunction()
+
+function(add_benchmark_target target_name)
+    if(ZD_JSON_BUILD_BENCHMARKS)
+        add_executable(zd_${target_name}
+            "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
         )
-    endif()
 
-    add_test(NAME zd_json_error_test COMMAND zd_json_error_test)
-    set_tests_properties(zd_json_error_test PROPERTIES LABELS "error")
-
-    add_executable(zd_json_tokenizer_test
-        "${CMAKE_SOURCE_DIR}/tests/json_tokenizer_test.cpp"
-    )
-
-    target_link_libraries(zd_json_tokenizer_test PRIVATE zd_json::zd_json)
-    target_include_directories(zd_json_tokenizer_test PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_tokenizer_test)
-    zd_json_enable_sanitizers(zd_json_tokenizer_test)
-    zd_json_enable_coverage(zd_json_tokenizer_test)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_tokenizer_test PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        target_link_libraries(zd_${target_name} PRIVATE
+            zd_json::zd_json
+            benchmark::benchmark
         )
-    endif()
-
-    add_test(NAME zd_json_tokenizer_test COMMAND zd_json_tokenizer_test)
-    set_tests_properties(zd_json_tokenizer_test PROPERTIES LABELS "tokenizer")
-
-    add_executable(zd_json_lexer_test
-        "${CMAKE_SOURCE_DIR}/tests/json_lexer_test.cpp"
-    )
-
-    target_link_libraries(zd_json_lexer_test PRIVATE zd_json::zd_json)
-    target_include_directories(zd_json_lexer_test PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_lexer_test)
-    zd_json_enable_sanitizers(zd_json_lexer_test)
-    zd_json_enable_coverage(zd_json_lexer_test)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_lexer_test PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        target_include_directories(zd_${target_name} PRIVATE
+            "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_SOURCE_DIR}/internal"
         )
+
+        zd_json_enable_warnings(zd_${target_name})
+        zd_json_enable_release_optimizations(zd_${target_name})
+
+        if(CLANG_TIDY_EXE)
+            set_target_properties(zd_${target_name} PROPERTIES
+                CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+            )
+        endif()
     endif()
+endfunction()
 
-    add_test(NAME zd_json_lexer_test COMMAND zd_json_lexer_test)
-    set_tests_properties(zd_json_lexer_test PROPERTIES LABELS "lexer")
+add_test_target(json_error_test error)
+add_test_target(json_tokenizer_test tokenizer)
+add_test_target(json_lexer_test lexer)
+add_test_target(json_parser_test parser)
+add_test_target(json_models_test models)
 
-	add_executable(zd_json_parser_test
-        "${CMAKE_SOURCE_DIR}/tests/json_parser_test.cpp"
-    )
-
-    target_link_libraries(zd_json_parser_test PRIVATE zd_json::zd_json)
-    target_include_directories(zd_json_parser_test PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_parser_test)
-    zd_json_enable_sanitizers(zd_json_parser_test)
-    zd_json_enable_coverage(zd_json_parser_test)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_parser_test PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
-        )
-    endif()
-
-    add_test(NAME zd_json_parser_test COMMAND zd_json_parser_test)
-    set_tests_properties(zd_json_parser_test PROPERTIES LABELS "parser")
-endif()
-
-if(ZD_JSON_BUILD_BENCHMARKS)
-    add_executable(zd_json_tokenizer_benchmarks
-        "${CMAKE_SOURCE_DIR}/benchmarks/json_tokenizer_benchmark.cpp"
-    )
-
-    target_link_libraries(zd_json_tokenizer_benchmarks PRIVATE
-        zd_json::zd_json
-        benchmark::benchmark
-    )
-    target_include_directories(zd_json_tokenizer_benchmarks PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_tokenizer_benchmarks)
-    zd_json_enable_release_optimizations(zd_json_tokenizer_benchmarks)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_tokenizer_benchmarks PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
-        )
-    endif()
-
-    add_executable(zd_json_lexer_benchmarks
-        "${CMAKE_SOURCE_DIR}/benchmarks/json_lexer_benchmark.cpp"
-    )
-
-    target_link_libraries(zd_json_lexer_benchmarks PRIVATE
-        zd_json::zd_json
-        benchmark::benchmark
-    )
-    target_include_directories(zd_json_lexer_benchmarks PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_lexer_benchmarks)
-    zd_json_enable_release_optimizations(zd_json_lexer_benchmarks)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_lexer_benchmarks PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
-        )
-    endif()
-
-	add_executable(zd_json_parser_benchmarks
-        "${CMAKE_SOURCE_DIR}/benchmarks/json_parser_benchmark.cpp"
-    )
-
-    target_link_libraries(zd_json_parser_benchmarks PRIVATE
-        zd_json::zd_json
-        benchmark::benchmark
-    )
-    target_include_directories(zd_json_parser_benchmarks PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_json_parser_benchmarks)
-    zd_json_enable_release_optimizations(zd_json_parser_benchmarks)
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_json_parser_benchmarks PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
-        )
-    endif()
-endif()
+add_benchmark_target(json_tokenizer_benchmarks)
+add_benchmark_target(json_lexer_benchmarks)
+add_benchmark_target(json_parser_benchmarks)
+add_benchmark_target(json_models_benchmarks)
