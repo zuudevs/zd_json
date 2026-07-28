@@ -154,7 +154,7 @@ void
     for (auto* s : invalid) {
         const auto r = ParseLiteral(s, s + std::strlen(s));
         assert(!r.has_value());
-        assert(r.error() == JsonErrc::InvalidBooleanLiteral);
+        assert(r.error() == JsonErrc::InvalidValue);
     }
 
     std::cout << "test_parse_bool passed\n";
@@ -171,8 +171,8 @@ void
     const char* invalid[] = {"", "nul", "Null", "nulll", "NULL"};
     for (auto* s : invalid) {
         const auto r = ParseLiteral(s, s + std::strlen(s));
-        assert(!r.has_value() && *r == -1);
-        assert(r.error() == JsonErrc::InvalidNullLiteral);
+        assert(!r.has_value());
+        assert(r.error() == JsonErrc::InvalidValue);
     }
 
     std::cout << "test_parse_null passed\n";
