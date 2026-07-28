@@ -32,13 +32,20 @@ std::expected<int8_t, JsonErrc>
 
         switch (val) {
             case constants::kNullWord:
-                return int8_t{-1};
+                if (rem == 4) {
+                    return int8_t{-1};
+                }
+                break;
             case constants::kTrueWord:
-                return int8_t{1};
+                if (rem == 4) {
+                    return int8_t{1};
+                }
+                break;
             case constants::kFalsWord: {
-                if (rem >= 5 && current[4] == 'e') {
+                if (rem == 5 && current[4] == 'e') {
                     return int8_t{0};
                 }
+                break;
             }
             default:
                 break;
