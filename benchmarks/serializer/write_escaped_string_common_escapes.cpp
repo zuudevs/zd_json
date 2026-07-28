@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteEscapedString_CommonEscapes(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteEscapedString(out, kCommonEscapesString);
         benchmark::DoNotOptimize(out);

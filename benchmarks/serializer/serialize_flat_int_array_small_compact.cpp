@@ -17,7 +17,7 @@ void
     Document document;
     Value value{BuildFlatIntArray(document, kSmallArrayCount)};
 
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out = SerializeCompact(value);
         benchmark::DoNotOptimize(out);
     }

@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteFloat_Exponent(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteFloat(out, kExponentFloat);
         benchmark::DoNotOptimize(out);

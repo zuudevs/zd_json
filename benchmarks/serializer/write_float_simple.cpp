@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteFloat_Simple(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteFloat(out, kSimpleFloat);
         benchmark::DoNotOptimize(out);

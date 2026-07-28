@@ -17,7 +17,7 @@ void
     Document document;
     Value value = BuildLargeArrayOfObjects(document, kLargeArrayOfObjectsCount);
 
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out = SerializePretty(value);
         benchmark::DoNotOptimize(out);
     }

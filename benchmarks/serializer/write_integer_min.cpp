@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteInteger_Min(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteInteger(out, kMinInt);
         benchmark::DoNotOptimize(out);

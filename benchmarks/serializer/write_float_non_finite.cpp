@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteFloat_NonFinite(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteFloat(out, kNaN);
         benchmark::DoNotOptimize(out);

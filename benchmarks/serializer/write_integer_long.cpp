@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteInteger_Long(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteInteger(out, kLongInt);
         benchmark::DoNotOptimize(out);

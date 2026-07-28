@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteEscapedString_MultibyteUtf8Passthrough(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteEscapedString(out, kMultibyteUtf8String);
         benchmark::DoNotOptimize(out);

@@ -17,7 +17,7 @@ void
     Document document;
     Value value = BuildMediumTree(document);
 
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out = SerializePretty(value, 4);
         benchmark::DoNotOptimize(out);
     }

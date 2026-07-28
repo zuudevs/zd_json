@@ -14,7 +14,7 @@ using namespace constants;
 
 void
     WriteEscapedString_PlainLong(benchmark::State& state) {
-    for (auto _ : state) {
+    for (auto stateLoop : state) {
         std::string out;
         WriteEscapedString(out, kPlainLongString);
         benchmark::DoNotOptimize(out);
