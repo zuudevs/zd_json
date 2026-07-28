@@ -20,6 +20,9 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
         "${CMAKE_SOURCE_DIR}/src/parser/parse_object.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_array.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_value.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serializer.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_number.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_string.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
