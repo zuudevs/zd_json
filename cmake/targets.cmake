@@ -17,6 +17,9 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
         "${CMAKE_SOURCE_DIR}/src/parser/parse_literal.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_null.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_string.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_object.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_array.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/parse_value.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
@@ -69,9 +72,15 @@ function(add_test_target target_name label)
 	endif()
 endfunction()
 
-function(add_benchmark_target target_name)
+function(add_benchmark_target target_name src_dir)
     if(ZD_JSON_BUILD_BENCHMARKS)
+		file(GLOB BM_SRCS
+			CONFIGURE_DEPENDS
+			"${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/${src_dir}/*_benchmarks.cpp"
+		)
+
         add_executable(zd_${target_name}
+			"${BM_SRCS}"
             "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
         )
 
@@ -82,6 +91,7 @@ function(add_benchmark_target target_name)
         target_include_directories(zd_${target_name} PRIVATE
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/internal"
+			"${CMAKE_SOURCE_DIR}/benchmarks/${src_dir}"
         )
 
         zd_json_enable_warnings(zd_${target_name})
@@ -101,7 +111,7 @@ add_test_target(json_lexer_test lexer)
 add_test_target(json_parser_test parser)
 add_test_target(json_models_test models)
 
-add_benchmark_target(json_tokenizer_benchmarks)
-add_benchmark_target(json_lexer_benchmarks)
-add_benchmark_target(json_parser_benchmarks)
-add_benchmark_target(json_models_benchmarks)
+add_benchmark_target(json_tokenizer_benchmarks tokenizer)
+add_benchmark_target(json_lexer_benchmarks lexer)
+add_benchmark_target(json_parser_benchmarks parser)
+add_benchmark_target(json_models_benchmarks models)

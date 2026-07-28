@@ -15,19 +15,31 @@
 #include <iostream>
 #include <string>
 
+#include "models/arena.hpp"
+#include "models/array.hpp"
+#include "models/object.hpp"
+#include "models/value.hpp"
+#include "parser/parse_array.hpp"
 #include "parser/parse_bool.hpp"
 #include "parser/parse_float.hpp"
 #include "parser/parse_integral.hpp"
 #include "parser/parse_literal.hpp"
 #include "parser/parse_null.hpp"
+#include "parser/parse_object.hpp"
 #include "parser/parse_string.hpp"
 
 using zuu::JsonErrc;
+using zuu::models::Arena;
+using zuu::models::Array;
+using zuu::models::Object;
+using zuu::models::Value;
+using zuu::parser::ParseArray;
 using zuu::parser::ParseBool;
 using zuu::parser::ParseFloat;
 using zuu::parser::ParseIntegral;
 using zuu::parser::ParseLiteral;
 using zuu::parser::ParseNull;
+using zuu::parser::ParseObject;
 using zuu::parser::ParseShortString;
 using zuu::parser::ParseString;
 
@@ -262,6 +274,234 @@ void
     std::cout << "test_parse_string passed\n";
 }
 
+void
+    test_parse_array() {
+    Arena arena;
+
+    // Empty array.
+    {
+        constexpr auto json = "[]";
+        size_t pos = 0;
+        const auto result = ParseArray(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        assert((*result)->empty());
+        assert(pos == std::strlen(json));
+    }
+
+    // Flat array of mixed scalar types.
+    {
+        constexpr auto json = R"([1, 2.5, "three", true, false, null])";
+        size_t pos = 0;
+        const auto result = ParseArray(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        const Array* array = *result;
+        assert(array->size() == 6);
+        assert(array->at(0).value()->as_integer().value() == 1);
+        assert(approx_equal(array->at(1).value()->as_double().value(), 2.5));
+        assert(array->at(2).value()->as_string().value() == "three");
+        assert(array->at(3).value()->as_bool().value() == true);
+        assert(array->at(4).value()->as_bool().value() == false);
+        assert(array->at(5).value()->is_null());
+        assert(pos == std::strlen(json));
+    }
+
+    // Nested arrays.
+    {
+        constexpr auto json = "[[1, 2], [3, [4, 5]]]";
+        size_t pos = 0;
+        const auto result = ParseArray(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        const Array* outer = *result;
+        assert(outer->size() == 2);
+
+        const Array* first = outer->at(0).value()->as_array().value();
+        assert(first->size() == 2);
+        assert(first->at(0).value()->as_integer().value() == 1);
+        assert(first->at(1).value()->as_integer().value() == 2);
+
+        const Array* second = outer->at(1).value()->as_array().value();
+        assert(second->size() == 2);
+        assert(second->at(0).value()->as_integer().value() == 3);
+
+        const Array* nested = second->at(1).value()->as_array().value();
+        assert(nested->size() == 2);
+        assert(nested->at(1).value()->as_integer().value() == 5);
+    }
+
+    // Whitespace tolerance around brackets, commas, and elements.
+    {
+        constexpr auto json = "  [ 1 ,\n\t2 , 3 ]  ";
+        size_t pos = 2; // caller is expected to point at '[' already
+        const auto result = ParseArray(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        assert((*result)->size() == 3);
+    }
+
+    // Malformed input.
+    {
+        const char* s = "1, 2]"; // doesn't start with '['
+        size_t pos = 0;
+        const auto result = ParseArray(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::InvalidFormat);
+    }
+    {
+        const char* s = "[1, 2"; // unterminated
+        size_t pos = 0;
+        const auto result = ParseArray(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::InvalidFormat);
+    }
+    {
+        const char* s = "[1, 2,]"; // trailing comma
+        size_t pos = 0;
+        const auto result = ParseArray(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::TrailingComma);
+    }
+    {
+        const char* s = "[1 2]"; // missing comma
+        size_t pos = 0;
+        const auto result = ParseArray(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::MissingComma);
+    }
+    {
+        const char* s = "[1, ]"; // missing element after comma
+        size_t pos = 0;
+        const auto result = ParseArray(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::TrailingComma);
+    }
+
+    std::cout << "test_parse_array passed\n";
+}
+
+void
+    test_parse_object() {
+    Arena arena;
+
+    // Empty object.
+    {
+        constexpr auto json = "{}";
+        size_t pos = 0;
+        const auto result = ParseObject(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        assert((*result)->empty());
+        assert(pos == std::strlen(json));
+    }
+
+    // Flat object with mixed member value types.
+    {
+        constexpr auto json =
+            R"({"name": "zuu", "age": 20, "score": 98.5, "active": true, "extra": null})";
+        size_t pos = 0;
+        const auto result = ParseObject(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        const Object* object = *result;
+        assert(object->size() == 5);
+        assert(object->Find("name").value()->as_string().value() == "zuu");
+        assert(object->Find("age").value()->as_integer().value() == 20);
+        assert(approx_equal(object->Find("score").value()->as_double().value(), 98.5));
+        assert(object->Find("active").value()->as_bool().value() == true);
+        assert(object->Find("extra").value()->is_null());
+        assert(pos == std::strlen(json));
+    }
+
+    // Nested objects and arrays together.
+    {
+        constexpr auto json =
+            R"({"values": [1, 2, 3], "nested": {"ok": true, "inner": {"deep": 1}}})";
+        size_t pos = 0;
+        const auto result = ParseObject(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        const Object* object = *result;
+
+        const Array* values = object->Find("values").value()->as_array().value();
+        assert(values->size() == 3);
+        assert(values->at(2).value()->as_integer().value() == 3);
+
+        const Object* nested = object->Find("nested").value()->as_object().value();
+        assert(nested->Find("ok").value()->as_bool().value() == true);
+
+        const Object* inner = nested->Find("inner").value()->as_object().value();
+        assert(inner->Find("deep").value()->as_integer().value() == 1);
+    }
+
+    // A key containing an escape sequence must be decoded, not left raw.
+    {
+        constexpr auto json = R"({"line\nbreak": 1})";
+        size_t pos = 0;
+        const auto result = ParseObject(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        assert((*result)->Find("line\nbreak").value()->as_integer().value() == 1);
+    }
+
+    // Duplicate keys are preserved in insertion order; Find() returns the
+    // first match, matching models::Object's own documented semantics.
+    {
+        constexpr auto json = R"({"a": 1, "a": 2})";
+        size_t pos = 0;
+        const auto result = ParseObject(json, pos, std::strlen(json), arena, 0);
+        assert(result.has_value());
+        assert((*result)->size() == 2);
+        assert((*result)->Find("a").value()->as_integer().value() == 1);
+    }
+
+    // Malformed input.
+    {
+        const char* s = R"("a": 1})"; // doesn't start with '{'
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::InvalidFormat);
+    }
+    {
+        const char* s = R"({"a": 1)"; // unterminated
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::InvalidFormat);
+    }
+    {
+        const char* s = R"({a: 1})"; // unquoted key
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::UnquotedKey);
+    }
+    {
+        const char* s = "{'a': 1}"; // single-quoted key
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::SingleQuotedString);
+    }
+    {
+        const char* s = R"({"a" 1})"; // missing colon
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::InvalidFormat);
+    }
+    {
+        const char* s = R"({"a": 1,})"; // trailing comma
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::TrailingComma);
+    }
+    {
+        const char* s = R"({"a": 1 "b": 2})"; // missing comma
+        size_t pos = 0;
+        const auto result = ParseObject(s, pos, std::strlen(s), arena, 0);
+        assert(!result.has_value());
+        assert(result.error() == JsonErrc::MissingComma);
+    }
+
+    std::cout << "test_parse_object passed\n";
+}
+
 } // namespace
 
 int
@@ -271,6 +511,8 @@ int
     test_parse_bool();
     test_parse_null();
     test_parse_string();
+    test_parse_array();
+    test_parse_object();
 
     std::cout << "All parser tests passed successfully!\n";
     return 0;
