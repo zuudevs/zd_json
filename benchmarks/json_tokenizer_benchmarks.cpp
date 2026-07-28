@@ -49,22 +49,24 @@ constexpr size_t kNumericCapacity = 20000;
 constexpr int kNumericCount = 1000;
 constexpr double kNumericValueMultiplier = 123.456;
 
-std::string generate_large_array_json() {
+std::string
+    generate_large_array_json() {
     std::string result = "[";
     result.reserve(kLargeArrayCapacity);
     for (int i = 0; i < kLargeArrayCount; ++i) {
         if (i > 0) {
             result += ",";
         }
-        result += R"({"index":)" + std::to_string(i) +
-                  R"(,"value":)" + std::to_string(static_cast<double>(i) * kLargeArrayValueMultiplier) +
+        result += R"({"index":)" + std::to_string(i) + R"(,"value":)" +
+                  std::to_string(static_cast<double>(i) * kLargeArrayValueMultiplier) +
                   R"(,"tag":"item_)" + std::to_string(i) + R"("})";
     }
     result += "]";
     return result;
 }
 
-std::string generate_deeply_nested_json() {
+std::string
+    generate_deeply_nested_json() {
     std::string result;
     result.reserve(kDeepNestedCapacity);
     for (int i = 0; i < kDeepNestedDepth; ++i) {
@@ -77,7 +79,8 @@ std::string generate_deeply_nested_json() {
     return result;
 }
 
-std::string generate_numeric_json() {
+std::string
+    generate_numeric_json() {
     std::string result = "[";
     result.reserve(kNumericCapacity);
     for (int i = 0; i < kNumericCount; ++i) {
@@ -92,7 +95,8 @@ std::string generate_numeric_json() {
 
 } // namespace
 
-static void BM_Tokenizer_SmallObject(benchmark::State& state) {
+static void
+    BM_Tokenizer_SmallObject(benchmark::State& state) {
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::Tokenize(kSmallJson);
         benchmark::DoNotOptimize(tokens);
@@ -104,7 +108,8 @@ static void BM_Tokenizer_SmallObject(benchmark::State& state) {
     state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-static void BM_Tokenizer_MediumPayload(benchmark::State& state) {
+static void
+    BM_Tokenizer_MediumPayload(benchmark::State& state) {
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::Tokenize(kMediumJson);
         benchmark::DoNotOptimize(tokens);
@@ -116,7 +121,8 @@ static void BM_Tokenizer_MediumPayload(benchmark::State& state) {
     state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-static void BM_Tokenizer_LargeArray(benchmark::State& state) {
+static void
+    BM_Tokenizer_LargeArray(benchmark::State& state) {
     const std::string json = generate_large_array_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::Tokenize(json);
@@ -129,7 +135,8 @@ static void BM_Tokenizer_LargeArray(benchmark::State& state) {
     state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-static void BM_Tokenizer_DeeplyNested(benchmark::State& state) {
+static void
+    BM_Tokenizer_DeeplyNested(benchmark::State& state) {
     const std::string json = generate_deeply_nested_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::Tokenize(json);
@@ -142,7 +149,8 @@ static void BM_Tokenizer_DeeplyNested(benchmark::State& state) {
     state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-static void BM_Tokenizer_NumericHeavy(benchmark::State& state) {
+static void
+    BM_Tokenizer_NumericHeavy(benchmark::State& state) {
     const std::string json = generate_numeric_json();
     for (auto stateLoop : state) {
         auto tokens = zuu::lexer::Tokenize(json);

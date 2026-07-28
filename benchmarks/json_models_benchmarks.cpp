@@ -104,8 +104,7 @@ Value
         Object::Builder object_builder;
         object_builder.Insert("index", Value{static_cast<int64_t>(i)});
         object_builder.Insert("value", Value{static_cast<double>(i) * kLargeArrayValueMultiplier});
-        object_builder.Insert(
-            "tag", Value{document.MakeString("item_" + std::to_string(i))});
+        object_builder.Insert("tag", Value{document.MakeString("item_" + std::to_string(i))});
         array_builder.Push(Value{object_builder.Build(document.arena())});
     }
     return Value{array_builder.Build(document.arena())};

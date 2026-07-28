@@ -6,7 +6,7 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
     PRIVATE
         "${CMAKE_SOURCE_DIR}/src/lexer/tokenizer.cpp"
         "${CMAKE_SOURCE_DIR}/src/lexer/lexer.cpp"
-        "${CMAKE_SOURCE_DIR}/src/models/arena.cpp"
+		"${CMAKE_SOURCE_DIR}/src/models/arena.cpp"
         "${CMAKE_SOURCE_DIR}/src/models/value.cpp"
         "${CMAKE_SOURCE_DIR}/src/models/array.cpp"
         "${CMAKE_SOURCE_DIR}/src/models/object.cpp"
@@ -42,54 +42,56 @@ endif()
 
 add_library(zd_json::zd_json ALIAS ${ZD_JSON_LIBRARY_TARGET})
 
-function(add_test_target TARGET_NAME LABEL)
+function(add_test_target target_name label)
 	if(ZD_JSON_BUILD_TESTS)
-		add_executable(zd_${TARGET_NAME}
-			"${CMAKE_SOURCE_DIR}/tests/${TARGET_NAME}.cpp"
+		add_executable(zd_${target_name}
+			"${CMAKE_SOURCE_DIR}/tests/${target_name}.cpp"
 		)
 
-		target_link_libraries(zd_${TARGET_NAME} PRIVATE zd_json::zd_json)
-		target_include_directories(zd_${TARGET_NAME} PRIVATE
+		target_link_libraries(zd_${target_name} PRIVATE zd_json::zd_json)
+		target_include_directories(zd_${target_name} PRIVATE
 			"${CMAKE_SOURCE_DIR}/include"
 			"${CMAKE_SOURCE_DIR}/internal"
 		)
 
-		zd_json_enable_warnings(zd_${TARGET_NAME})
-		zd_json_enable_sanitizers(zd_${TARGET_NAME})
-		zd_json_enable_coverage(zd_${TARGET_NAME})
+		zd_json_enable_warnings(zd_${target_name})
+		zd_json_enable_sanitizers(zd_${target_name})
+		zd_json_enable_coverage(zd_${target_name})
 
 		if(CLANG_TIDY_EXE)
-			set_target_properties(zd_${TARGET_NAME} PROPERTIES
+			set_target_properties(zd_${target_name} PROPERTIES
 				CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
 			)
 		endif()
 
-		add_test(NAME zd_${TARGET_NAME} COMMAND zd_${TARGET_NAME})
-		set_tests_properties(zd_${TARGET_NAME} PROPERTIES LABELS "${LABEL}")
+		add_test(NAME zd_${target_name} COMMAND zd_${target_name})
+		set_tests_properties(zd_${target_name} PROPERTIES LABELS "${label}")
 	endif()
 endfunction()
 
-function(add_benchmark_target TARGET_NAME)
-	add_executable(zd_${TARGET_NAME}
-        "${CMAKE_SOURCE_DIR}/benchmarks/${TARGET_NAME}.cpp"
-    )
-
-    target_link_libraries(zd_${TARGET_NAME} PRIVATE
-        zd_json::zd_json
-        benchmark::benchmark
-    )
-    target_include_directories(zd_${TARGET_NAME} PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
-        "${CMAKE_SOURCE_DIR}/internal"
-    )
-
-    zd_json_enable_warnings(zd_${TARGET_NAME})
-    zd_json_enable_release_optimizations(zd_${TARGET_NAME})
-
-    if(CLANG_TIDY_EXE)
-        set_target_properties(zd_${TARGET_NAME} PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+function(add_benchmark_target target_name)
+    if(ZD_JSON_BUILD_BENCHMARKS)
+        add_executable(zd_${target_name}
+            "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
         )
+
+        target_link_libraries(zd_${target_name} PRIVATE
+            zd_json::zd_json
+            benchmark::benchmark
+        )
+        target_include_directories(zd_${target_name} PRIVATE
+            "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_SOURCE_DIR}/internal"
+        )
+
+        zd_json_enable_warnings(zd_${target_name})
+        zd_json_enable_release_optimizations(zd_${target_name})
+
+        if(CLANG_TIDY_EXE)
+            set_target_properties(zd_${target_name} PROPERTIES
+                CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+            )
+        endif()
     endif()
 endfunction()
 
