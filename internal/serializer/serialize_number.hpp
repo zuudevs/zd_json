@@ -13,7 +13,7 @@
 #include <cstdint>
 #include <string>
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 /**
  * @brief Appends the base-10 text form of @p value to @p out.
@@ -43,4 +43,4 @@ void
 void
     WriteFloat(std::string& out, double value) noexcept;
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

@@ -16,7 +16,7 @@
 #include <cstddef>
 #include <string_view>
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 void
     WriteInteger(std::string& out, int64_t value) noexcept {
@@ -54,4 +54,4 @@ void
     }
 }
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

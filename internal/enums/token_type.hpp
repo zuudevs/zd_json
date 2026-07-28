@@ -12,8 +12,8 @@
 
 #include <cstdint>
 
-namespace zuu::enums {
+namespace zuu::json::enums {
 
 enum class TokenType : uint8_t { ObjectBeg, ObjectEnd, ArrayBeg, ArrayEnd, Comma, Colon };
 
-} // namespace zuu::enums
+} // namespace zuu::json::enums

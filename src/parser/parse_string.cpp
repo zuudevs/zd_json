@@ -15,7 +15,7 @@
 
 #include "constants/common.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 namespace detail {
 
@@ -193,4 +193,4 @@ std::expected<std::string, JsonErrc>
     return out;
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

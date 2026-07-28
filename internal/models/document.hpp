@@ -16,7 +16,7 @@
 #include "models/arena.hpp"
 #include "models/value.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 /**
  * @brief Owns the memory for a parsed JSON document tree.
@@ -95,4 +95,4 @@ class Document {
     Value root_{};
 };
 
-} // namespace zuu::models
+} // namespace zuu::json::models

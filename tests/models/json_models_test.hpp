@@ -22,10 +22,10 @@
 #include "models/value.hpp"
 #include "zd_json/error.hpp"
 
-using zuu::JsonErrc;
-using zuu::enums::JsonType;
-using zuu::models::Arena;
-using zuu::models::Array;
-using zuu::models::Document;
-using zuu::models::Object;
-using zuu::models::Value;
+using zuu::json::JsonErrc;
+using zuu::json::enums::JsonType;
+using zuu::json::models::Arena;
+using zuu::json::models::Array;
+using zuu::json::models::Document;
+using zuu::json::models::Object;
+using zuu::json::models::Value;

@@ -18,7 +18,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 /**
  * @brief A growable bump (arena) allocator that owns every node of a
@@ -31,7 +31,7 @@ namespace zuu::models {
  * moved, so pointers and spans handed out by this arena stay valid for the
  * lifetime of the Arena. There is no per-object destructor tracking either
  * -- Arena is intended for the trivially destructible node types in
- * zuu::models (Value, Array, Object), so releasing memory in bulk on
+ * zuu::json::models (Value, Array, Object), so releasing memory in bulk on
  * Reset() or destruction never leaks a resource. Not thread-safe: an
  * Arena (and the Document that owns it) is meant to be built and read by
  * a single thread at a time.
@@ -81,7 +81,7 @@ class Arena {
      *
      * T's constructor should be non-throwing: Create() is itself noexcept,
      * so a throwing constructor would terminate the program rather than
-     * propagate. All node types in zuu::models (Value, Array, Object) use
+     * propagate. All node types in zuu::json::models (Value, Array, Object) use
      * only noexcept constructors for this reason.
      *
      * @param args Arguments forwarded to T's constructor.
@@ -191,4 +191,4 @@ class Arena {
     size_t bytes_allocated_ = 0;
 };
 
-} // namespace zuu::models
+} // namespace zuu::json::models

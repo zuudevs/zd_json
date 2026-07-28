@@ -20,7 +20,7 @@
 #include "models/value.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 class Arena;
 
@@ -123,4 +123,4 @@ class Object {
 static_assert(std::is_trivially_copyable_v<Object::Member>,
               "Object::Member must be trivially copyable so Arena::CreateArray can memcpy it.");
 
-} // namespace zuu::models
+} // namespace zuu::json::models

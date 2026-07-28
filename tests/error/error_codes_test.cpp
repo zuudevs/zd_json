@@ -11,8 +11,8 @@
 #include "json_error_test.hpp"
 
 TEST(JsonErrorTest, StringConversions) {
-    using zuu::JsonErrc;
-    using zuu::to_string;
+    using zuu::json::JsonErrc;
+    using zuu::json::to_string;
 
     EXPECT_STREQ(to_string(JsonErrc::None), "No error");
     EXPECT_STREQ(to_string(JsonErrc::CommentNotAllowed),

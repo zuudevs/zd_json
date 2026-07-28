@@ -10,7 +10,7 @@
 
 #include "parser/parse_float.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 std::expected<double, JsonErrc>
     ParseFloat(const char* first, const char* last) noexcept {
@@ -98,4 +98,4 @@ std::expected<double, JsonErrc>
     return std::unexpected{JsonErrc::InvalidFormat};
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

@@ -15,8 +15,8 @@ TEST(JsonLexerTest, Utf8AndControlCharValidation) {
     {
         constexpr auto strPayload = "\"caf\xC3\xA9 \xE4\xB8\xAD \xF0\x9F\x98\x80\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::None);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::None);
         EXPECT_EQ(scanResult.value_end, strView.size());
     }
 
@@ -26,24 +26,24 @@ TEST(JsonLexerTest, Utf8AndControlCharValidation) {
                                     "\x28"
                                     "bad\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::InvalidUnicode);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::InvalidUnicode);
     }
 
     // Overlong 2-byte encoding of U+0000 (0xC0 0x80).
     {
         constexpr auto strPayload = "\"\xC0\x80\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::InvalidUnicode);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::InvalidUnicode);
     }
 
     // A UTF-16 surrogate value (U+D800) encoded directly as UTF-8 bytes.
     {
         constexpr auto strPayload = "\"\xED\xA0\x80\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::InvalidSurrogate);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::InvalidSurrogate);
     }
 
     // Unescaped raw control character.
@@ -52,25 +52,25 @@ TEST(JsonLexerTest, Utf8AndControlCharValidation) {
         strPayload.push_back('\x09');
         strPayload += "\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::UnescapedCharacter);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::UnescapedCharacter);
     }
 
     // An ASCII run spanning multiple 8-byte SWAR blocks scans cleanly.
     {
         std::string strPayload = "\"" + std::string(40, 'a') + "\"";
         std::string_view strView(strPayload);
-        const auto scanResult = zuu::lexer::ScanString(strView, 0, strView.size());
-        EXPECT_EQ(scanResult.error, zuu::JsonErrc::None);
+        const auto scanResult = zuu::json::lexer::ScanString(strView, 0, strView.size());
+        EXPECT_EQ(scanResult.error, zuu::json::JsonErrc::None);
         EXPECT_EQ(scanResult.value_end, strView.size());
     }
 
     // The error is still visible through the full LexValues pipeline.
     {
         constexpr auto strPayload = "\"\xC0\x80\"";
-        const auto invalidTokens = zuu::lexer::Tokenize(strPayload);
-        const auto invalidValues = zuu::lexer::LexValues(strPayload, invalidTokens);
+        const auto invalidTokens = zuu::json::lexer::Tokenize(strPayload);
+        const auto invalidValues = zuu::json::lexer::LexValues(strPayload, invalidTokens);
         ASSERT_EQ(invalidValues.size(), 1u);
-        EXPECT_EQ(invalidValues[0].error, zuu::JsonErrc::InvalidUnicode);
+        EXPECT_EQ(invalidValues[0].error, zuu::json::JsonErrc::InvalidUnicode);
     }
 }

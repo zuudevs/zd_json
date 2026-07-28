@@ -11,8 +11,8 @@
 #include "json_error_test.hpp"
 
 TEST(JsonVersionTest, VersionConstants) {
-    EXPECT_STREQ(zuu::zd_json_version, "0.6.0");
-    EXPECT_EQ(zuu::zd_json_version_major, 0);
-    EXPECT_EQ(zuu::zd_json_version_minor, 6);
-    EXPECT_EQ(zuu::zd_json_version_patch, 0);
+    EXPECT_STREQ(zuu::json::zd_json_version, "0.7.0");
+    EXPECT_EQ(zuu::json::zd_json_version_major, 0);
+    EXPECT_EQ(zuu::json::zd_json_version_minor, 7);
+    EXPECT_EQ(zuu::json::zd_json_version_patch, 0);
 }

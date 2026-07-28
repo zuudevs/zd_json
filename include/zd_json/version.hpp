@@ -2,7 +2,7 @@
  * @file version.hpp
  * @author zuudevs (zuudevs@gmail.com)
  * @brief Auto-generated version header
- * @version 0.6.0
+ * @version 0.7.0
  * @date 2026-07-26
  *
  * @copyright Copyright (c) 2026
@@ -12,12 +12,12 @@
 
 #include <cstdint>
 
-namespace zuu {
+namespace zuu::json {
 
-constexpr const char* zd_json_version = "0.6.0";
+constexpr const char* zd_json_version = "0.7.0";
 constexpr uint8_t zd_json_version_major = 0;
-constexpr uint8_t zd_json_version_minor = 6;
+constexpr uint8_t zd_json_version_minor = 7;
 constexpr uint8_t zd_json_version_patch = 0;
 constexpr const char* zd_json_author = "zuudevs";
 
-} // namespace zuu
+} // namespace zuu::json

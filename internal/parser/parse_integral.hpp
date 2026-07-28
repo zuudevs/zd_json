@@ -20,9 +20,9 @@
 #include "constants/swar.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 [[nodiscard]] std::expected<uint64_t, JsonErrc>
     ParseIntegral(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

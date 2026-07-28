@@ -10,7 +10,7 @@
 
 #include "parser/parse_integral.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 std::expected<uint64_t, JsonErrc>
     ParseIntegral(const char* first, const char* last) noexcept {
@@ -81,4 +81,4 @@ std::expected<uint64_t, JsonErrc>
     return {(is_negative ? -static_cast<uint64_t>(value) : static_cast<uint64_t>(value))};
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

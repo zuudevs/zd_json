@@ -12,7 +12,7 @@
 
 #include "models/arena.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 void
     Object::Builder::Insert(std::string_view key, Value value) noexcept {
@@ -40,4 +40,4 @@ bool
     return Find(key).has_value();
 }
 
-} // namespace zuu::models
+} // namespace zuu::json::models

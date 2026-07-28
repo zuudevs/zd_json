@@ -13,7 +13,7 @@
 #include "constants/swar.hpp"
 #include <cstdint>
 
-namespace zuu::utils {
+namespace zuu::json::utils {
 
 // --- SWAR byte-lane helpers (Mycroft's "find zero byte" family) ---
 //
@@ -41,4 +41,4 @@ namespace zuu::utils {
     return (v - broadcasted_n) & ~v & constants::kSwarMsb;
 }
 
-} // namespace zuu::utils
+} // namespace zuu::json::utils

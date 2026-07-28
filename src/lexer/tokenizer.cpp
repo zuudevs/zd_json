@@ -21,7 +21,7 @@
 #include "lexer/tokenizer.hpp"
 #include "utils/bits.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 std::vector<Token>
     Tokenize(std::string_view input) noexcept {
@@ -107,4 +107,4 @@ std::vector<Token>
     return result;
 }
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

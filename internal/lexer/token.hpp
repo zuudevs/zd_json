@@ -16,7 +16,7 @@
 
 #include "enums/token_type.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 /**
  * @brief
@@ -45,4 +45,4 @@ static_assert(std::is_trivially_copyable_v<Token>, "Token must be trivially copy
 
 static_assert(std::is_standard_layout_v<Token>, "Token must have standard layout.");
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

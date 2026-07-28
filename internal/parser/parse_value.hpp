@@ -18,11 +18,11 @@
 #include "models/value.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 class Arena;
-} // namespace zuu::models
+} // namespace zuu::json::models
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 /**
  * @brief Maximum container nesting depth permitted while parsing.
@@ -65,4 +65,4 @@ inline constexpr size_t kMaxParseDepth = 512;
                models::Arena& arena,
                size_t depth) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

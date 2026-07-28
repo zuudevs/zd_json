@@ -10,7 +10,7 @@
 
 #include "parser/parse_bool.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 std::expected<bool, JsonErrc>
     ParseBool(const char* first, const char* last) noexcept {
@@ -28,4 +28,4 @@ std::expected<bool, JsonErrc>
     return std::unexpected{JsonErrc::InvalidBooleanLiteral};
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

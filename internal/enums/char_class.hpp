@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu::enums {
+namespace zuu::json::enums {
 
 enum class CharClass : uint8_t {
     Alpha,
@@ -22,4 +22,4 @@ enum class CharClass : uint8_t {
     Quote,
 };
 
-} // namespace zuu::enums
+} // namespace zuu::json::enums

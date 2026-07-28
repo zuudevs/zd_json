@@ -18,9 +18,9 @@
 #include "constants/lookups/power_10_lookup.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 [[nodiscard]] std::expected<double, JsonErrc>
     ParseFloat(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

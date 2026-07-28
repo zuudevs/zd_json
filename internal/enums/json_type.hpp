@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu::enums {
+namespace zuu::json::enums {
 
 enum class JsonType : uint8_t {
     Array,
@@ -25,4 +25,4 @@ enum class JsonType : uint8_t {
     String,
 };
 
-} // namespace zuu::enums
+} // namespace zuu::json::enums

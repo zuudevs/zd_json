@@ -10,7 +10,7 @@
 
 #include "parser/parse_null.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 std::expected<std::nullptr_t, JsonErrc>
     ParseNull(const char* first, const char* last) noexcept {
@@ -23,4 +23,4 @@ std::expected<std::nullptr_t, JsonErrc>
     return std::unexpected{JsonErrc::InvalidNullLiteral};
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

@@ -20,7 +20,7 @@
 * [x] Implement `Error`
 * [x] Implement `Result<T>` using `std::expected`
 * [x] Implement version information
-* [ ] Design public API
+* [x] Design public API
 
 ---
 

@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu::constants {
+namespace zuu::json::constants {
 
 #ifdef __AVX2__
 constexpr uint8_t kBlockSize = 16;
@@ -43,4 +43,4 @@ constexpr uint32_t kTrueWord = 0x74727565;
 constexpr uint32_t kFalsWord = 0x66616c73;
 #endif
 
-} // namespace zuu::constants
+} // namespace zuu::json::constants

@@ -14,7 +14,7 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu {
+namespace zuu::json {
 
 /**
  * @brief The result of any fallible zd_json operation.
@@ -25,7 +25,7 @@ namespace zuu {
  * (Parse(), Value::as_*(), Array::at(), Object::Find(), ...), so callers
  * consistently check `result.has_value()` / `bool(result)` and unwrap via
  * `*result` or `result.value()`, or inspect the failure via
- * `result.error()` and zuu::to_string().
+ * `result.error()` and zuu::json::to_string().
  *
  * @tparam T The success payload type.
  */
@@ -47,4 +47,4 @@ using Result = std::expected<T, JsonErrc>;
     return std::unexpected<JsonErrc>(code);
 }
 
-} // namespace zuu
+} // namespace zuu::json

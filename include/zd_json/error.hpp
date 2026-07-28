@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu {
+namespace zuu::json {
 
 enum class JsonErrc : uint8_t {
     None,
@@ -95,4 +95,4 @@ enum class JsonErrc : uint8_t {
     }
 }
 
-} // namespace zuu
+} // namespace zuu::json

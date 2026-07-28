@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu::constants::lookups {
+namespace zuu::json::constants::lookups {
 
 constexpr uint64_t kIntegralPower10Lookup[]{1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
 constexpr double kFloatPower10NegLookup[]{1e0,   1e-1,  1e-2,  1e-3,  1e-4,  1e-5,  1e-6,  1e-7,
@@ -22,4 +22,4 @@ constexpr double kFloatPower10PosLookup[]{1e0,  1e1,  1e2,  1e3,  1e4,  1e5,  1e
                                           1e8,  1e9,  1e10, 1e11, 1e12, 1e13, 1e14, 1e15,
                                           1e16, 1e17, 1e18, 1e19, 1e20, 1e21, 1e22};
 
-} // namespace zuu::constants::lookups
+} // namespace zuu::json::constants::lookups

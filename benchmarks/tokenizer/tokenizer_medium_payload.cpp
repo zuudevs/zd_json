@@ -16,7 +16,7 @@ using namespace constants;
 void
     Tokenizer_MediumPayload(benchmark::State& state) {
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::Tokenize(kMediumJson);
+        auto tokens = zuu::json::lexer::Tokenize(kMediumJson);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }

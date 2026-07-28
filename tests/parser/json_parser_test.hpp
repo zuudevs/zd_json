@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <gtest/gtest.h>
 #include <string>
 
 #include "models/arena.hpp"
@@ -29,20 +29,20 @@
 #include "parser/parse_object.hpp"
 #include "parser/parse_string.hpp"
 
-using zuu::JsonErrc;
-using zuu::models::Arena;
-using zuu::models::Array;
-using zuu::models::Object;
-using zuu::models::Value;
-using zuu::parser::ParseArray;
-using zuu::parser::ParseBool;
-using zuu::parser::ParseFloat;
-using zuu::parser::ParseIntegral;
-using zuu::parser::ParseLiteral;
-using zuu::parser::ParseNull;
-using zuu::parser::ParseObject;
-using zuu::parser::ParseShortString;
-using zuu::parser::ParseString;
+using zuu::json::JsonErrc;
+using zuu::json::models::Arena;
+using zuu::json::models::Array;
+using zuu::json::models::Object;
+using zuu::json::models::Value;
+using zuu::json::parser::ParseArray;
+using zuu::json::parser::ParseBool;
+using zuu::json::parser::ParseFloat;
+using zuu::json::parser::ParseIntegral;
+using zuu::json::parser::ParseLiteral;
+using zuu::json::parser::ParseNull;
+using zuu::json::parser::ParseObject;
+using zuu::json::parser::ParseShortString;
+using zuu::json::parser::ParseString;
 
 inline bool
     approx_equal(double a, double b) {

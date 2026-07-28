@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <new>
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 namespace {
 
@@ -148,4 +148,4 @@ void
     }
 }
 
-} // namespace zuu::models
+} // namespace zuu::json::models

@@ -18,7 +18,7 @@
 #include "serializer/serialize_number.hpp"
 #include "serializer/serialize_string.hpp"
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 namespace {
 
@@ -143,4 +143,4 @@ std::string
     return Serialize(value, SerializeOptions{.pretty = true, .indent_size = indent_size});
 }
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

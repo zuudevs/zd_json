@@ -15,14 +15,14 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 /**
  * @brief Parses a JSON boolean literal (`true` or `false`).
  *
  * The range [first, last) must contain exactly one of the two literals;
  * no surrounding whitespace is allowed. This mirrors what
- * zuu::lexer::ScanAlpha hands off: the exact span of an alphabetic token.
+ * zuu::json::lexer::ScanAlpha hands off: the exact span of an alphabetic token.
  *
  * @param first Pointer to the first character of the literal.
  * @param last Exclusive pointer to one past the last character.
@@ -32,4 +32,4 @@ namespace zuu::parser {
 [[nodiscard]] std::expected<bool, JsonErrc>
     ParseBool(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser
