@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
 #include <cstring>
-#include <zd_json/json_error.hpp>
+#include <gtest/gtest.h>
+#include <zd_json/error.hpp>
 #include <zd_json/version.hpp>

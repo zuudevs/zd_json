@@ -14,7 +14,7 @@
 #include <expected>
 #include <string_view>
 
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"
 
 namespace zuu::models {
 class Arena;

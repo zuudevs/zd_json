@@ -16,7 +16,7 @@
 
 #include "constants/common.hpp"
 #include "constants/lookups/power_10_lookup.hpp"
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"
 
 namespace zuu::parser {
 

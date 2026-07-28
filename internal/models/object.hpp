@@ -18,7 +18,7 @@
 #include <vector>
 
 #include "models/value.hpp"
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"
 
 namespace zuu::models {
 
