@@ -113,6 +113,7 @@ add_test_target(json_tokenizer_test tokenizer)
 add_test_target(json_lexer_test lexer)
 add_test_target(json_parser_test parser)
 add_test_target(json_models_test models)
+add_test_target(json_serializer_test serializer)
 
 add_benchmark_target(json_tokenizer_benchmarks tokenizer)
 add_benchmark_target(json_lexer_benchmarks lexer)

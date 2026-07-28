@@ -16,8 +16,8 @@ namespace zuu::serializer {
 
 namespace {
 
-constexpr std::array<char, 16> kHexDigits = {'0', '1', '2', '3', '4', '5', '6', '7',
-                                              '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+constexpr std::array<char, 16> kHexDigits = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 // Appends a `\u00XX` escape for a control character below 0x20 that has no
 // short (\b \f \n \r \t) escape of its own.
