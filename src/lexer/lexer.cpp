@@ -22,35 +22,15 @@
 #include "enums/json_type.hpp"
 #include "enums/token_type.hpp"
 #include "lexer/value.hpp"
+#include "utils/bits.hpp"
 #include "zd_json/json_error.hpp"
 
 namespace zuu::lexer {
 
 namespace {
 
-// --- SWAR byte-lane helpers (Mycroft's "find zero byte" family) ---
-//
-// For an 8-byte word v, each helper produces a mask with the high bit of
-// lane i set iff lane i satisfies the predicate. A zero result means "none
-// of the 8 bytes matched"; a non-zero result lets std::countr_zero locate
-// the first matching byte in O(1) instead of testing each byte in turn.
-
-[[nodiscard]] constexpr uint64_t
-    HasZero(uint64_t v) noexcept {
-    return (v - constants::kSwarOne) & ~v & constants::kSwarMsb;
-}
-
-[[nodiscard]] constexpr uint64_t
-    HasByte(uint64_t v, uint64_t broadcasted) noexcept {
-    return HasZero(v ^ broadcasted);
-}
-
-// Valid for broadcasted values built from n in [1, 128]; matches lanes whose
-// unsigned byte value is strictly less than n.
-[[nodiscard]] constexpr uint64_t
-    HasLess(uint64_t v, uint64_t broadcasted_n) noexcept {
-    return (v - broadcasted_n) & ~v & constants::kSwarMsb;
-}
+using utils::HasByte;
+using utils::HasLess;
 
 // Validates a single UTF-8 sequence starting at *p (p < end is guaranteed by
 // the caller). Always advances `advance` by at least 1 so the caller makes
@@ -205,12 +185,42 @@ ScanResult
     ScanNumber(std::string_view input, size_t start, size_t end) noexcept {
     bool is_float = false;
     size_t idx = start + 1;
+
+    const auto* const base = reinterpret_cast<const unsigned char*>(input.data());
+
     while (idx < end) {
-        const char character = input[idx];
+        // Fast path: pull 8 bytes at once and check, in parallel, whether
+        // all of them are ASCII digits ('0'-'9'). Runs of digits dominate a
+        // JSON number's bytes, so a block that is entirely digits can be
+        // skipped in one step instead of being classified byte by byte.
+        if (idx + constants::kUint8Len <= end) {
+            uint64_t block{};
+            std::memcpy(&block, base + idx, sizeof(block));
+
+            const uint64_t val = block - constants::kSwarZero;
+            const uint64_t non_digits =
+                ((val + constants::kSwarDigitBias) | val) & constants::kSwarMsb;
+
+            if (non_digits == 0) {
+                idx += constants::kUint8Len;
+                continue;
+            }
+
+            idx += static_cast<size_t>(std::countr_zero(non_digits) >> 3);
+        }
+
+        if (idx >= end) {
+            break;
+        }
+
+        // Slow path: a single non-digit character -- '.', sign, 'e'/'E', or
+        // the number's true end -- decides how (or whether) scanning
+        // continues.
+        const char character = static_cast<char>(base[idx]);
         const uint8_t char_class =
             constants::lookups::kJsonTypeLookup[static_cast<uint8_t>(character)];
         if (char_class == static_cast<uint8_t>(enums::CharClass::Numeric)) {
-            ++idx;
+            ++idx; // digit adjacent to a block boundary, not part of the SWAR run above
         } else if (char_class == static_cast<uint8_t>(enums::CharClass::Dot)) {
             is_float = true;
             ++idx;
