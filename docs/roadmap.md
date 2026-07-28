@@ -57,14 +57,14 @@
 
 ## v0.6.0 Serializer
 
-* [ ] Compact JSON writer
-* [ ] Pretty JSON writer
+* [x] Compact JSON writer
+* [x] Pretty JSON writer
 
 ---
 
 ## v0.7.0 Testing
 
-* [ ] Unit tests
+* [x] Unit tests
 * [ ] Integration tests
 * [ ] Fuzz testing
 
@@ -74,7 +74,7 @@
 
 * [x] Integrate Google Benchmark
 * [x] Add parsing benchmarks
-* [ ] Add serialization benchmarks
+* [x] Add serialization benchmarks
 * [x] Add DOM benchmarks
 * [ ] Benchmark against real-world datasets
 

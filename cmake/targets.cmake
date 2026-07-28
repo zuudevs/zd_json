@@ -20,6 +20,9 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
         "${CMAKE_SOURCE_DIR}/src/parser/parse_object.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_array.cpp"
         "${CMAKE_SOURCE_DIR}/src/parser/parse_value.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serializer.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_number.cpp"
+		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_string.cpp"
 )
 
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
@@ -110,8 +113,10 @@ add_test_target(json_tokenizer_test tokenizer)
 add_test_target(json_lexer_test lexer)
 add_test_target(json_parser_test parser)
 add_test_target(json_models_test models)
+add_test_target(json_serializer_test serializer)
 
 add_benchmark_target(json_tokenizer_benchmarks tokenizer)
 add_benchmark_target(json_lexer_benchmarks lexer)
 add_benchmark_target(json_parser_benchmarks parser)
 add_benchmark_target(json_models_benchmarks models)
+add_benchmark_target(json_serializer_benchmarks serializer)

@@ -1,6 +1,6 @@
 {
     "name": "zd-json",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "builtin-baseline": "40f3c709db80acf154ac4b17a1f83c564ebd022e",
     "dependencies": [
         "benchmark",
