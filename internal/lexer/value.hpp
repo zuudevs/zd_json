@@ -15,7 +15,7 @@
 #include "enums/json_type.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 /**
  * @brief
@@ -42,4 +42,4 @@ struct Value {
         , error(error) {}
 };
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

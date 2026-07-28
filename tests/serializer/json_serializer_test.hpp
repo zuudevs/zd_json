@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
 #include <charconv>
 #include <cstdint>
 #include <cstring>
+#include <gtest/gtest.h>
 #include <limits>
 #include <string>
 #include <string_view>
@@ -29,16 +29,16 @@
 #include "serializer/serialize_string.hpp"
 #include "serializer/serializer.hpp"
 
-using zuu::models::Arena;
-using zuu::models::Array;
-using zuu::models::Document;
-using zuu::models::Object;
-using zuu::models::Value;
-using zuu::parser::ParseValue;
-using zuu::serializer::Serialize;
-using zuu::serializer::SerializeCompact;
-using zuu::serializer::SerializeOptions;
-using zuu::serializer::SerializePretty;
-using zuu::serializer::WriteEscapedString;
-using zuu::serializer::WriteFloat;
-using zuu::serializer::WriteInteger;
+using zuu::json::models::Arena;
+using zuu::json::models::Array;
+using zuu::json::models::Document;
+using zuu::json::models::Object;
+using zuu::json::models::Value;
+using zuu::json::parser::ParseValue;
+using zuu::json::serializer::Serialize;
+using zuu::json::serializer::SerializeCompact;
+using zuu::json::serializer::SerializeOptions;
+using zuu::json::serializer::SerializePretty;
+using zuu::json::serializer::WriteEscapedString;
+using zuu::json::serializer::WriteFloat;
+using zuu::json::serializer::WriteInteger;

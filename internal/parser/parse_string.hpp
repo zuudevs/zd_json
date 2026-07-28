@@ -17,7 +17,7 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 /**
  * @brief Zero-copy fast path for JsonType::Short string values.
@@ -40,7 +40,7 @@ namespace zuu::parser {
  * Handles the standard escape sequences (`\"`, `\\`, `\/`, `\b`, `\f`,
  * `\n`, `\r`, `\t`) as well as `\uXXXX` escapes, including combining UTF-16
  * surrogate pairs into a single code point before re-encoding as UTF-8.
- * Raw (non-escaped) bytes are copied through as-is: zuu::lexer::ScanString
+ * Raw (non-escaped) bytes are copied through as-is: zuu::json::lexer::ScanString
  * already validates that they form well-formed UTF-8 and contain no
  * unescaped control characters, so this function does not repeat that
  * check on the caller's behalf; the [first, last) span should come from a
@@ -55,4 +55,4 @@ namespace zuu::parser {
 [[nodiscard]] std::expected<std::string, JsonErrc>
     ParseString(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

@@ -16,10 +16,10 @@
 
 #include "lexer/token.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 [[nodiscard]]
 std::vector<lexer::Token>
     Tokenize(std::string_view input) noexcept;
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

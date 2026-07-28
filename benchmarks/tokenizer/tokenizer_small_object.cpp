@@ -16,7 +16,7 @@ using namespace constants;
 void
     Tokenizer_SmallObject(benchmark::State& state) {
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::Tokenize(kSmallJson);
+        auto tokens = zuu::json::lexer::Tokenize(kSmallJson);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }

@@ -15,7 +15,7 @@
 
 #include "constants/common.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 std::expected<int8_t, JsonErrc>
     ParseLiteral(const char* first, const char* last) noexcept {
@@ -54,4 +54,4 @@ std::expected<int8_t, JsonErrc>
     return std::unexpected{JsonErrc::InvalidValue};
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

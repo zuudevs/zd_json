@@ -15,7 +15,7 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 /**
  * @brief Parses a JSON `null` literal.
@@ -31,4 +31,4 @@ namespace zuu::parser {
 [[nodiscard]] std::expected<std::nullptr_t, JsonErrc>
     ParseNull(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

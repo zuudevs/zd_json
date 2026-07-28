@@ -17,8 +17,8 @@ using namespace constants;
 void
     Lexer_SmallObject(benchmark::State& state) {
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::Tokenize(kSmallJson);
-        auto values = zuu::lexer::LexValues(kSmallJson, tokens);
+        auto tokens = zuu::json::lexer::Tokenize(kSmallJson);
+        auto values = zuu::json::lexer::LexValues(kSmallJson, tokens);
         benchmark::DoNotOptimize(tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();

@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-namespace zuu::constants {
+namespace zuu::json::constants {
 
 constexpr uint64_t kSwarZero = 0x3030303030303030;
 constexpr uint64_t kSwarOne = 0x101010101010101;
@@ -36,4 +36,4 @@ constexpr uint64_t kSwarArrayEnd = 0x5D5D5D5D5D5D5D5D;  // ']' (0x5D) repeated
 constexpr uint64_t kSwarComma = 0x2C2C2C2C2C2C2C2C;     // ',' (0x2C) repeated
 constexpr uint64_t kSwarColon = 0x3A3A3A3A3A3A3A3A;     // ':' (0x3A) repeated
 
-} // namespace zuu::constants
+} // namespace zuu::json::constants

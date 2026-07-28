@@ -23,13 +23,21 @@ target_sources(${ZD_JSON_LIBRARY_TARGET}
 		"${CMAKE_SOURCE_DIR}/src/serializer/serializer.cpp"
 		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_number.cpp"
 		"${CMAKE_SOURCE_DIR}/src/serializer/serialize_string.cpp"
+		"${CMAKE_SOURCE_DIR}/src/zd_json/json.cpp"
 )
 
+# NOTE: internal/ is exposed PUBLIC (not PRIVATE) because the public
+# umbrella header <zd_json/json.hpp> aliases models::Document/Value/
+# Array/Object and serializer::SerializeOptions directly rather than
+# duplicating their definitions -- so any consumer that includes
+# zd_json/json.hpp needs internal/ on its include path too. The headers
+# under internal/ are still not part of the supported API surface: only
+# the names re-exported from zd_json/json.hpp (the zuu:: aliases and
+# Parse()/Serialize*()) are meant to be used directly by consumers.
 target_include_directories(${ZD_JSON_LIBRARY_TARGET}
     PUBLIC
         "${CMAKE_SOURCE_DIR}/include"
         "${CMAKE_BINARY_DIR}/include"
-    PRIVATE
         "${CMAKE_SOURCE_DIR}/internal"
 )
 
@@ -124,6 +132,7 @@ add_test_target(json_lexer_test lexer)
 add_test_target(json_parser_test parser)
 add_test_target(json_models_test models)
 add_test_target(json_serializer_test serializer)
+add_test_target(json_api_test api)
 
 add_benchmark_target(json_tokenizer_benchmarks tokenizer)
 add_benchmark_target(json_lexer_benchmarks lexer)

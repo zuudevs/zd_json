@@ -18,7 +18,7 @@
 #include "enums/json_type.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 class Array;
 class Object;
@@ -34,7 +34,7 @@ class Object;
  * points into (the owning Document's arena and/or the original input
  * buffer) stays alive.
  *
- * Unlike zuu::lexer::Value, which records the raw, not-yet-decoded span
+ * Unlike zuu::json::lexer::Value, which records the raw, not-yet-decoded span
  * of a scanned token, this Value holds the fully decoded, structured
  * result: a real bool, a real double, a nested Array/Object, and so on.
  */
@@ -200,4 +200,4 @@ class Value {
 static_assert(std::is_trivially_copyable_v<Value>, "Value must be trivially copyable.");
 static_assert(std::is_trivially_destructible_v<Value>, "Value must be trivially destructible.");
 
-} // namespace zuu::models
+} // namespace zuu::json::models

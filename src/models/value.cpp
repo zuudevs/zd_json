@@ -10,7 +10,7 @@
 
 #include "models/value.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 std::expected<bool, JsonErrc>
     Value::as_bool() const noexcept {
@@ -88,4 +88,4 @@ std::expected<Object*, JsonErrc>
     return object_;
 }
 
-} // namespace zuu::models
+} // namespace zuu::json::models

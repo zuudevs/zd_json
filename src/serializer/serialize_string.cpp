@@ -12,7 +12,7 @@
 
 #include <array>
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 namespace {
 
@@ -71,4 +71,4 @@ void
     out.push_back('\"');
 }
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

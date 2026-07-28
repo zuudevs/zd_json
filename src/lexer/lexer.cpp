@@ -25,7 +25,7 @@
 #include "utils/bits.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 namespace {
 
@@ -320,4 +320,4 @@ std::vector<Value>
     return values;
 }
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

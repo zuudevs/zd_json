@@ -1,7 +1,8 @@
 /**
  * @file json_serializer_benchmarks.hpp
  * @author zuudevs (zuudevs@gmail.com)
- * @brief Benchmark function declarations and shared payload constants/helpers for zd_json serializer benchmarks.
+ * @brief Benchmark function declarations and shared payload constants/helpers for zd_json
+ * serializer benchmarks.
  * @version 0.7.0
  * @date 2026-07-28
  *
@@ -76,18 +77,18 @@ void
 
 namespace constants {
 
-using zuu::models::Arena;
-using zuu::models::Array;
-using zuu::models::Document;
-using zuu::models::Object;
-using zuu::models::Value;
-using zuu::serializer::Serialize;
-using zuu::serializer::SerializeCompact;
-using zuu::serializer::SerializeOptions;
-using zuu::serializer::SerializePretty;
-using zuu::serializer::WriteEscapedString;
-using zuu::serializer::WriteFloat;
-using zuu::serializer::WriteInteger;
+using zuu::json::models::Arena;
+using zuu::json::models::Array;
+using zuu::json::models::Document;
+using zuu::json::models::Object;
+using zuu::json::models::Value;
+using zuu::json::serializer::Serialize;
+using zuu::json::serializer::SerializeCompact;
+using zuu::json::serializer::SerializeOptions;
+using zuu::json::serializer::SerializePretty;
+using zuu::json::serializer::WriteEscapedString;
+using zuu::json::serializer::WriteFloat;
+using zuu::json::serializer::WriteInteger;
 
 constexpr int64_t kShortInt = 42;
 constexpr int64_t kLongInt = 1234567890123456789;

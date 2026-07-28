@@ -60,11 +60,11 @@ void
 
 namespace constants {
 
-using zuu::models::Arena;
-using zuu::models::Array;
-using zuu::models::Document;
-using zuu::models::Object;
-using zuu::models::Value;
+using zuu::json::models::Arena;
+using zuu::json::models::Array;
+using zuu::json::models::Document;
+using zuu::json::models::Object;
+using zuu::json::models::Value;
 
 constexpr int kSmallArrayCount = 8;
 constexpr int kMediumArrayCount = 128;
@@ -143,18 +143,18 @@ inline Object*
 inline int64_t
     SumNumbers(const Value& value) {
     switch (value.type()) {
-        case zuu::enums::JsonType::Integer:
+        case zuu::json::enums::JsonType::Integer:
             return value.as_integer().value();
-        case zuu::enums::JsonType::Float:
+        case zuu::json::enums::JsonType::Float:
             return static_cast<int64_t>(value.as_float().value());
-        case zuu::enums::JsonType::Array: {
+        case zuu::json::enums::JsonType::Array: {
             int64_t sum = 0;
             for (const Value& element : *value.as_array().value()) {
                 sum += SumNumbers(element);
             }
             return sum;
         }
-        case zuu::enums::JsonType::Object: {
+        case zuu::json::enums::JsonType::Object: {
             int64_t sum = 0;
             for (const auto& member : *value.as_object().value()) {
                 sum += SumNumbers(member.value);

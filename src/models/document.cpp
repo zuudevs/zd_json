@@ -10,7 +10,7 @@
 
 #include "models/document.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 Document::Document(size_t initial_block_size) noexcept
     : arena_(initial_block_size) {}
@@ -21,4 +21,4 @@ void
     root_ = Value{};
 }
 
-} // namespace zuu::models
+} // namespace zuu::json::models

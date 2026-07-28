@@ -17,7 +17,7 @@
 #include "models/value.hpp"
 #include "serializer/serialize_options.hpp"
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 /**
  * @brief Renders @p value -- and, recursively, everything it contains --
@@ -58,4 +58,4 @@ namespace zuu::serializer {
 [[nodiscard]] std::string
     SerializePretty(const models::Value& value, uint8_t indent_size = 2) noexcept;
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

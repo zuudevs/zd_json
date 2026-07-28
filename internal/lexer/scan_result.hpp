@@ -15,7 +15,7 @@
 #include "enums/json_type.hpp"
 #include "zd_json/error.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 /**
  * @brief Result of a single forward scan over a JSON value.
@@ -48,4 +48,4 @@ struct ScanResult {
     JsonErrc error = JsonErrc::None;
 };
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

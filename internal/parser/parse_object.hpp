@@ -17,12 +17,12 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 class Arena;
 class Object;
-} // namespace zuu::models
+} // namespace zuu::json::models
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 /**
  * @brief Parses a JSON object value into an arena-owned models::Object.
@@ -63,4 +63,4 @@ namespace zuu::parser {
                 models::Arena& arena,
                 size_t depth) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

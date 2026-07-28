@@ -17,7 +17,7 @@ void
     Tokenizer_DeeplyNested(benchmark::State& state) {
     const std::string json = generate_deeply_nested_json();
     for (auto stateLoop : state) {
-        auto tokens = zuu::lexer::Tokenize(json);
+        auto tokens = zuu::json::lexer::Tokenize(json);
         benchmark::DoNotOptimize(tokens);
         benchmark::ClobberMemory();
     }

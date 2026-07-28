@@ -14,7 +14,7 @@
 #include "models/array.hpp"
 #include "parser/parse_value.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 namespace {
 
@@ -95,4 +95,4 @@ std::expected<models::Array*, JsonErrc>
     return array;
 }
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

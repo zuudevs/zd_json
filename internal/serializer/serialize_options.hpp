@@ -13,7 +13,7 @@
 
 #include <cstdint>
 
-namespace zuu::serializer {
+namespace zuu::json::serializer {
 
 /**
  * @brief Formatting knobs shared by every Write/Serialize entry point.
@@ -29,4 +29,4 @@ struct SerializeOptions {
     uint8_t indent_size = 2;
 };
 
-} // namespace zuu::serializer
+} // namespace zuu::json::serializer

@@ -15,9 +15,9 @@
 
 #include "zd_json/error.hpp"
 
-namespace zuu::parser {
+namespace zuu::json::parser {
 
 [[nodiscard]] std::expected<int8_t, JsonErrc>
     ParseLiteral(const char* first, const char* last) noexcept;
 
-} // namespace zuu::parser
+} // namespace zuu::json::parser

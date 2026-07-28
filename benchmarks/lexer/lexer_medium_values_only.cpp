@@ -16,9 +16,9 @@ using namespace constants;
 
 void
     Lexer_MediumValuesOnly(benchmark::State& state) {
-    const auto tokens = zuu::lexer::Tokenize(kMediumJson);
+    const auto tokens = zuu::json::lexer::Tokenize(kMediumJson);
     for (auto stateLoop : state) {
-        auto values = zuu::lexer::LexValues(kMediumJson, tokens);
+        auto values = zuu::json::lexer::LexValues(kMediumJson, tokens);
         benchmark::DoNotOptimize(values);
         benchmark::ClobberMemory();
     }

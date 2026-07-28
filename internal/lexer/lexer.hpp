@@ -18,7 +18,7 @@
 #include "token.hpp"
 #include "value.hpp"
 
-namespace zuu::lexer {
+namespace zuu::json::lexer {
 
 /**
  * @brief Scans a JSON string value starting at the opening quotation mark.
@@ -32,7 +32,7 @@ namespace zuu::lexer {
  * ScanResult::error; scanning still continues to the true closing quote so
  * that value_end remains correct. Escape sequences themselves (e.g. `\n`,
  * `\uXXXX`) are only located here, not semantically validated -- that is
- * the job of zuu::parser::ParseString.
+ * the job of zuu::json::parser::ParseString.
  *
  * @param input Input JSON text.
  * @param start Index of the opening quotation mark.
@@ -102,4 +102,4 @@ void
 [[nodiscard]] std::vector<Value>
     LexValues(std::string_view input, std::span<const Token> tokens) noexcept;
 
-} // namespace zuu::lexer
+} // namespace zuu::json::lexer

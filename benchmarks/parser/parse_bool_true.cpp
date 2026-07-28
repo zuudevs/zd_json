@@ -22,7 +22,7 @@ void
         benchmark::DoNotOptimize(start);
         benchmark::DoNotOptimize(end);
 
-        auto result = zuu::parser::ParseBool(start, end);
+        auto result = zuu::json::parser::ParseBool(start, end);
         benchmark::DoNotOptimize(result);
     }
     state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));

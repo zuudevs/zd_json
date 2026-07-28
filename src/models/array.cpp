@@ -12,7 +12,7 @@
 
 #include "models/arena.hpp"
 
-namespace zuu::models {
+namespace zuu::json::models {
 
 void
     Array::Builder::Push(Value value) noexcept {
@@ -33,4 +33,4 @@ std::expected<const Value*, JsonErrc>
     return &values_[index];
 }
 
-} // namespace zuu::models
+} // namespace zuu::json::models
