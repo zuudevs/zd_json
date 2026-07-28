@@ -1,0 +1,23 @@
+/**
+ * @file write_escaped_string_common_escapes.cpp
+ * @author zuudevs (zuudevs@gmail.com)
+ * @brief WriteEscapedString_CommonEscapes benchmark implementation
+ * @version 0.7.0
+ * @date 2026-07-28
+ *
+ * @copyright Copyright (c) 2026
+ */
+
+#include "json_serializer_benchmarks.hpp"
+
+using namespace constants;
+
+void
+    WriteEscapedString_CommonEscapes(benchmark::State& state) {
+    for (auto _ : state) {
+        std::string out;
+        WriteEscapedString(out, kCommonEscapesString);
+        benchmark::DoNotOptimize(out);
+    }
+    state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));
+}

@@ -79,7 +79,7 @@ function(add_benchmark_target target_name src_dir)
     if(ZD_JSON_BUILD_BENCHMARKS)
 		file(GLOB BM_SRCS
 			CONFIGURE_DEPENDS
-			"${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/${src_dir}/*_benchmarks.cpp"
+			"${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/${src_dir}/*.cpp"
 		)
 
         add_executable(zd_${target_name}
