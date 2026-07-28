@@ -72,6 +72,11 @@ class Value {
         : type_(enums::JsonType::Object)
         , object_(value) {}
 
+    static constexpr Value
+        FromLiteral(int8_t code) noexcept {
+        return code != -1 ? Value{static_cast<bool>(code)} : Value{nullptr};
+    }
+
     [[nodiscard]] constexpr enums::JsonType
         type() const noexcept {
         return type_;

@@ -46,8 +46,8 @@
 
 ## v0.5.0 Parser
 
-* [ ] Parse objects
-* [ ] Parse arrays
+* [x] Parse objects
+* [x] Parse arrays
 * [x] Parse strings
 * [x] Parse numbers
 * [x] Parse literals (`true`, `false`, `null`)
@@ -72,10 +72,10 @@
 
 ## v0.8.0 Benchmark
 
-* [ ] Integrate Google Benchmark
-* [ ] Add parsing benchmarks
+* [x] Integrate Google Benchmark
+* [x] Add parsing benchmarks
 * [ ] Add serialization benchmarks
-* [ ] Add DOM benchmarks
+* [x] Add DOM benchmarks
 * [ ] Benchmark against real-world datasets
 
 ---
