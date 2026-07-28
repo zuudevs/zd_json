@@ -24,12 +24,21 @@ namespace zuu::lexer {
  * @brief Scans a JSON string value starting at the opening quotation mark.
  *
  * Tracks escape sequences and locates the matching closing quotation mark
- * in a single forward pass.
+ * in a single forward pass. Using an 8-byte SWAR fast path, the same pass
+ * also validates that the string's raw bytes form well-formed UTF-8 (no
+ * overlong encodings, encoded surrogates, or out-of-range code points) and
+ * that no unescaped ASCII control character (< 0x20) appears in the
+ * content. The first such error, if any, is reported via
+ * ScanResult::error; scanning still continues to the true closing quote so
+ * that value_end remains correct. Escape sequences themselves (e.g. `\n`,
+ * `\uXXXX`) are only located here, not semantically validated -- that is
+ * the job of zuu::parser::ParseString.
  *
  * @param input Input JSON text.
  * @param start Index of the opening quotation mark.
  * @param end Exclusive upper bound of the scan range.
- * @return The detected string type and its exclusive end index.
+ * @return The detected string type, its exclusive end index, and the first
+ *         validation error encountered (JsonErrc::None if valid).
  */
 [[nodiscard]] ScanResult
     ScanString(std::string_view input, size_t start, size_t end) noexcept;

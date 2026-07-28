@@ -15,12 +15,19 @@
 #include <iostream>
 #include <string>
 
+#include "parser/parse_bool.hpp"
 #include "parser/parse_float.hpp"
 #include "parser/parse_integral.hpp"
+#include "parser/parse_null.hpp"
+#include "parser/parse_string.hpp"
 
 using zuu::JsonErrc;
+using zuu::parser::ParseBool;
 using zuu::parser::ParseFloat;
 using zuu::parser::ParseIntegral;
+using zuu::parser::ParseNull;
+using zuu::parser::ParseShortString;
+using zuu::parser::ParseString;
 
 namespace {
 
@@ -122,12 +129,141 @@ void
     std::cout << "test_parse_float passed\n";
 }
 
+void
+    test_parse_bool() {
+    {
+        constexpr auto s = "true";
+        const auto r = ParseBool(s, s + 4);
+        assert(r.has_value() && *r == true);
+    }
+    {
+        constexpr auto s = "false";
+        const auto r = ParseBool(s, s + 5);
+        assert(r.has_value() && *r == false);
+    }
+
+    const char* invalid[] = {"", "tru", "True", "falze", "truee", "fals", "nulll"};
+    for (auto* s : invalid) {
+        const auto r = ParseBool(s, s + std::strlen(s));
+        assert(!r.has_value());
+        assert(r.error() == JsonErrc::InvalidBooleanLiteral);
+    }
+
+    std::cout << "test_parse_bool passed\n";
+}
+
+void
+    test_parse_null() {
+    {
+        constexpr auto s = "null";
+        const auto r = ParseNull(s, s + 4);
+        assert(r.has_value());
+        assert(*r == nullptr);
+    }
+
+    const char* invalid[] = {"", "nul", "Null", "nulll", "NULL"};
+    for (auto* s : invalid) {
+        const auto r = ParseNull(s, s + std::strlen(s));
+        assert(!r.has_value());
+        assert(r.error() == JsonErrc::InvalidNullLiteral);
+    }
+
+    std::cout << "test_parse_null passed\n";
+}
+
+void
+    test_parse_string() {
+    // ParseShortString: zero-copy, unescaped content only.
+    {
+        constexpr auto s = R"("hello")";
+        const auto r = ParseShortString(s, s + std::strlen(s));
+        assert(r.has_value());
+        assert(*r == "hello");
+    }
+    {
+        constexpr auto s = R"("")";
+        const auto r = ParseShortString(s, s + 2);
+        assert(r.has_value());
+        assert(r->empty());
+    }
+    {
+        constexpr auto s = "hello"; // missing quotes
+        const auto r = ParseShortString(s, s + 5);
+        assert(!r.has_value());
+        assert(r.error() == JsonErrc::InvalidFormat);
+    }
+
+    // ParseString: full escape decoding.
+    struct Case {
+        const char* input;
+        const char* expected;
+    };
+    const Case cases[] = {
+        {R"("hello")", "hello"},
+        {R"("")", ""},
+        {R"("line\nbreak")", "line\nbreak"},
+        {R"("tab\there")", "tab\there"},
+        {R"("quote\"inside")", "quote\"inside"},
+        {R"("back\\slash")", "back\\slash"},
+        {R"("slash\/ok")", "slash/ok"},
+        {R"("\u0041\u0042\u0043")", "ABC"},
+        // U+1F600 GRINNING FACE via a UTF-16 surrogate pair.
+        {R"("emoji:\uD83D\uDE00")", "emoji:\xF0\x9F\x98\x80"},
+    };
+    for (const auto& c : cases) {
+        const auto r = ParseString(c.input, c.input + std::strlen(c.input));
+        assert(r.has_value());
+        assert(*r == c.expected);
+    }
+
+    // Raw multi-byte UTF-8 is copied through untouched.
+    {
+        constexpr auto s = "\"caf\xC3\xA9\""; // "café"
+        const auto r = ParseString(s, s + std::strlen(s));
+        assert(r.has_value());
+        assert(*r == "caf\xC3\xA9");
+    }
+
+    struct BadCase {
+        const char* input;
+        JsonErrc expected_err;
+    };
+    const BadCase bad_cases[] = {
+        {"hello", JsonErrc::InvalidFormat},                // missing quotes
+        {R"("bad\x")", JsonErrc::InvalidValue},            // unknown escape
+        {R"("bad\u12")", JsonErrc::InvalidValue},          // incomplete \u escape
+        {R"("bad\uZZZZ")", JsonErrc::InvalidValue},        // non-hex \u digits
+        {R"("\uD83Dnotlow")", JsonErrc::InvalidSurrogate}, // high surrogate w/o low
+        {R"("\uDE00")", JsonErrc::InvalidSurrogate},       // lone low surrogate
+    };
+    for (const auto& bc : bad_cases) {
+        const auto r = ParseString(bc.input, bc.input + std::strlen(bc.input));
+        assert(!r.has_value());
+        assert(r.error() == bc.expected_err);
+    }
+
+    // Unescaped raw control character.
+    {
+        std::string s = "\"bad";
+        s.push_back('\x01');
+        s += "char\"";
+        const auto r = ParseString(s.c_str(), s.c_str() + s.size());
+        assert(!r.has_value());
+        assert(r.error() == JsonErrc::UnescapedCharacter);
+    }
+
+    std::cout << "test_parse_string passed\n";
+}
+
 } // namespace
 
 int
     main() {
     test_parse_integral();
     test_parse_float();
+    test_parse_bool();
+    test_parse_null();
+    test_parse_string();
 
     std::cout << "All parser tests passed successfully!\n";
     return 0;

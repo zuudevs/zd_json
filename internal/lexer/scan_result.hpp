@@ -13,6 +13,7 @@
 #include <cstddef>
 
 #include "enums/json_type.hpp"
+#include "zd_json/json_error.hpp"
 
 namespace zuu::lexer {
 
@@ -35,6 +36,16 @@ struct ScanResult {
      * that belongs to the scanned JSON value.
      */
     size_t value_end;
+
+    /**
+     * @brief First validation error found while scanning, if any.
+     *
+     * ScanString sets this to a non-None value when it encounters an
+     * unescaped control character or a malformed UTF-8 byte sequence.
+     * Scanning still continues to the true end of the value so that
+     * @c value_end remains correct; only the first error is kept.
+     */
+    JsonErrc error = JsonErrc::None;
 };
 
 } // namespace zuu::lexer
