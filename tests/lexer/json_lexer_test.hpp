@@ -17,4 +17,4 @@
 #include "enums/json_type.hpp"
 #include "lexer/lexer.hpp"
 #include "lexer/tokenizer.hpp"
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"

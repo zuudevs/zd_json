@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
 #include <cstring>
+#include <gtest/gtest.h>
 #include <string_view>
 
 #include "enums/json_type.hpp"
@@ -20,7 +20,7 @@
 #include "models/document.hpp"
 #include "models/object.hpp"
 #include "models/value.hpp"
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"
 
 using zuu::JsonErrc;
 using zuu::enums::JsonType;

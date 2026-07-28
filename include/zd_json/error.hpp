@@ -1,5 +1,5 @@
 /**
- * @file json_error.hpp
+ * @file error.hpp
  * @author zuudevs (zuudevs@gmail.com)
  * @brief Brief description
  * @version 0.2.0

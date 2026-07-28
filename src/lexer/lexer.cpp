@@ -23,7 +23,7 @@
 #include "enums/token_type.hpp"
 #include "lexer/value.hpp"
 #include "utils/bits.hpp"
-#include "zd_json/json_error.hpp"
+#include "zd_json/error.hpp"
 
 namespace zuu::lexer {
 

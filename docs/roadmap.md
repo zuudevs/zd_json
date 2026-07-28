@@ -18,7 +18,7 @@
 
 * [x] Implement `ErrorCode`
 * [x] Implement `Error`
-* [ ] Implement `Result<T>` using `std::expected`
+* [x] Implement `Result<T>` using `std::expected`
 * [x] Implement version information
 * [ ] Design public API
 
