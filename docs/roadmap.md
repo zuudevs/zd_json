@@ -48,9 +48,9 @@
 
 * [ ] Parse objects
 * [ ] Parse arrays
-* [ ] Parse strings
-* [ ] Parse numbers
-* [ ] Parse literals (`true`, `false`, `null`)
+* [x] Parse strings
+* [x] Parse numbers
+* [x] Parse literals (`true`, `false`, `null`)
 * [ ] Improve parser diagnostics
 
 ---
