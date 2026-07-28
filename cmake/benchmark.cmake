@@ -1,6 +1,6 @@
 if(ZD_JSON_BUILD_BENCHMARKS)
     find_package(benchmark CONFIG QUIET)
-    if(NOT benchmark_FOUND AND NOT TARGET benchmark::benchmark AND NOT TARGET benchmark)
+    if(NOT benchmark_FOUND AND NOT TARGET benchmark::benchmark)
         include(FetchContent)
         FetchContent_Declare(
             benchmark
@@ -9,9 +9,5 @@ if(ZD_JSON_BUILD_BENCHMARKS)
         )
         set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
         FetchContent_MakeAvailable(benchmark)
-    endif()
-
-    if(TARGET benchmark AND NOT TARGET benchmark::benchmark)
-        add_library(benchmark::benchmark ALIAS benchmark)
     endif()
 endif()

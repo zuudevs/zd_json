@@ -11,6 +11,7 @@
 #include "parser/parse_literal.hpp"
 
 #include <cstdint>
+#include <cstring>
 
 #include "constants/common.hpp"
 
@@ -23,7 +24,11 @@ std::expected<int8_t, JsonErrc>
 
     if (rem >= 4) [[likely]] {
         uint32_t val{};
-        std::memcpy(&val, current, 4);
+#if defined(__clang__) || defined(__GNUC__)
+        __builtin_memcpy(&val, current, sizeof(val));
+#else
+        std::memcpy(&val, current, sizeof(val));
+#endif
 
         switch (val) {
             case constants::kNullWord:

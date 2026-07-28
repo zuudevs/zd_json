@@ -3,7 +3,6 @@ if(ZD_JSON_ENABLE_CLANG_FORMAT)
 
     if(CLANG_FORMAT_EXE)
         file(GLOB_RECURSE ALL_SOURCE_FILES CONFIGURE_DEPENDS
-            "${CMAKE_SOURCE_DIR}/benchmarks/*.cpp"
             "${CMAKE_SOURCE_DIR}/include/*.hpp"
             "${CMAKE_SOURCE_DIR}/internal/*.hpp"
             "${CMAKE_SOURCE_DIR}/src/*.cpp"

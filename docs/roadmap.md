@@ -37,10 +37,10 @@
 
 ## v0.4.0 DOM
 
-* [ ] Implement `Value`
-* [ ] Implement `Array`
-* [ ] Implement `Object`
-* [ ] Implement `Document`
+* [x] Implement `Value`
+* [x] Implement `Array`
+* [x] Implement `Object`
+* [x] Implement `Document`
 
 ---
 
