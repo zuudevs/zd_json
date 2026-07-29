@@ -1,18 +1,18 @@
-name: Coverage
+name: Fuzzing
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "include/**"
       - "internal/**"
       - "src/**"
-      - "tests/**"
+      - "tests/fuzz/**"
       - "cmake/**"
       - "CMakeLists.txt"
       - "CMakePresets.json"
-      - ".github/workflows/**"
+      - ".github/workflows/fuzz.yml"
+
   pull_request:
     branches:
       - main
@@ -23,15 +23,20 @@ on:
       - "include/**"
       - "internal/**"
       - "src/**"
-      - "tests/**"
+      - "tests/fuzz/**"
       - "cmake/**"
       - "CMakeLists.txt"
       - "CMakePresets.json"
-      - ".github/workflows/**"
+      - ".github/workflows/fuzz.yml"
 
 jobs:
-  coverage:
-    runs-on: ubuntu-latest
+  fuzz:
+    name: "Fuzzing (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     env:
       CC: clang
@@ -51,17 +56,16 @@ jobs:
       - name: Setup CMake
         uses: lukka/get-cmake@latest
 
-      - name: Configure
+      - name: Build Fuzz Targets
         run: |
-          cmake -B build \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DZD_JSON_ENABLE_COVERAGE=ON \
-            -DZD_JSON_BUILD_TESTS=ON \
-            -DZD_JSON_BUILD_BENCHMARKS=OFF
+          cmake --preset fuzz
+          cmake --build --preset fuzz
 
-      - name: Build
-        run: cmake --build build --parallel
+      - name: Corpus Replay via CTest
+        run: ctest --preset fuzz --output-on-failure
 
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
+      - name: Run Fuzz Smoke Test
+        shell: bash
+        run: |
+          ./out/bin/zd_fuzz_parse_run -runs=10000 tests/fuzz/corpus/fuzz_parse
+          ./out/bin/zd_fuzz_roundtrip_run -runs=10000 tests/fuzz/corpus/fuzz_roundtrip

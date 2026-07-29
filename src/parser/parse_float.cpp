@@ -55,7 +55,7 @@ std::expected<double, JsonErrc>
         }
         bool exp_negative = (*ptr == constants::kCharNegative);
         ptr += (exp_negative || *ptr == constants::kCharPositive);
-        int32_t exponent{};
+        int64_t exponent{};
         bool has_exp_digits{};
         while (ptr != last) {
             if (static_cast<uint8_t>(*ptr - constants::kCharZero) >= constants::kDigit) {
@@ -82,7 +82,7 @@ std::expected<double, JsonErrc>
         if (decimal_shift > 0) {
             result *= constants::lookups::kFloatPower10PosLookup[decimal_shift];
         } else if (decimal_shift < 0) {
-            result *= constants::lookups::kFloatPower10NegLookup[-decimal_shift];
+            result /= constants::lookups::kFloatPower10PosLookup[-decimal_shift];
         }
 
         return is_negative ? -result : result;

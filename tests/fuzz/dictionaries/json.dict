@@ -1,0 +1,74 @@
+# libFuzzer dictionary for zd_json.
+#
+# Speeds up mutation-based fuzzing by biasing the fuzzer toward tokens
+# that actually matter to a JSON grammar, instead of relying purely on
+# random byte mutation to rediscover them. See:
+# https://llvm.org/docs/LibFuzzer.html#dictionaries
+#
+# Usage: ./fuzz_parse -dict=dictionaries/json.dict corpus/fuzz_parse
+
+# Structural tokens
+"{"
+"}"
+"["
+"]"
+":"
+","
+"\""
+
+# Literals
+"true"
+"false"
+"null"
+
+# Whitespace
+" "
+"\t"
+"\n"
+"\r"
+
+# Numbers / edge cases the parser has explicit error paths for
+"0"
+"-0"
+"-1"
+"01"
+"1e309"
+"1e-309"
+"-9223372036854775808"
+"9223372036854775807"
+"1.0"
+"1e10"
+"1E+10"
+"1e-10"
+".5"
+"-"
+"+"
+"."
+"e"
+"E"
+
+# String escapes
+"\\\""
+"\\\\"
+"\\/"
+"\\b"
+"\\f"
+"\\n"
+"\\r"
+"\\t"
+"\\u0000"
+"\\u001f"
+"\\uD800"
+"\\uDC00"
+"\\uD800\\uDC00"
+"\\uZZZZ"
+
+# Malformed / adversarial fragments the grammar explicitly rejects
+"'"
+"/*"
+"*/"
+"//"
+"NaN"
+"Infinity"
+"-Infinity"
+"undefined"

@@ -44,7 +44,7 @@ function(zd_json_enable_release_optimizations target_name)
         )
     endif()
 
-    if(IPO_SUPPORTED AND ZD_JSON_ENABLE_IPO)
+    if(IPO_SUPPORTED AND ZD_JSON_ENABLE_IPO AND NOT ZD_JSON_BUILD_FUZZERS)
         set_property(TARGET ${target_name} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
     endif()
 endfunction()

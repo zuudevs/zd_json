@@ -7,7 +7,9 @@ if(ZD_JSON_ENABLE_CLANG_FORMAT)
             "${CMAKE_SOURCE_DIR}/include/*.hpp"
             "${CMAKE_SOURCE_DIR}/internal/*.hpp"
             "${CMAKE_SOURCE_DIR}/src/*.cpp"
-            "${CMAKE_SOURCE_DIR}/tests/*.cpp"
+            "${CMAKE_SOURCE_DIR}/tests/fuzz/*.cpp"
+            "${CMAKE_SOURCE_DIR}/tests/integration/**"
+            "${CMAKE_SOURCE_DIR}/tests/unit/**"
             "${CMAKE_SOURCE_DIR}/example/*.cpp"
         )
 

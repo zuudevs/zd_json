@@ -22,6 +22,7 @@ include(cmake/static-analysis.cmake)
 
 include(cmake/testing.cmake)
 include(cmake/benchmark.cmake)
+include(cmake/fuzzing.cmake)
 
 include(cmake/targets.cmake)
 
