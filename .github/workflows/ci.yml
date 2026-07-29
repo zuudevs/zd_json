@@ -11,6 +11,7 @@ on:
       - "benchmarks/**"
       - "cmake/**"
       - "CMakeLists.txt"
+      - "CMakePresets.json"
       - ".github/workflows/**"
 
   pull_request:
@@ -27,28 +28,41 @@ on:
       - "benchmarks/**"
       - "cmake/**"
       - "CMakeLists.txt"
+      - "CMakePresets.json"
       - ".github/workflows/**"
 
 jobs:
   build:
-    name: "${{ matrix.name }}"
-    runs-on: ubuntu-latest
+    name: "${{ matrix.name }} (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: "Debug + ASan/UBSan"
+          - name: "Linux Debug + ASan/UBSan"
+            os: ubuntu-latest
+            preset: debug
             build_type: Debug
             sanitizers: ON
             clang_tidy: OFF
             benchmarks: OFF
 
-          - name: "Release + Benchmark"
+          - name: "Linux Release + Benchmark"
+            os: ubuntu-latest
+            preset: release
             build_type: Release
             sanitizers: OFF
             clang_tidy: ON
             benchmarks: ON
+
+          - name: "Windows Release (MSVC/Clang)"
+            os: windows-latest
+            preset: release
+            build_type: Release
+            sanitizers: OFF
+            clang_tidy: OFF
+            benchmarks: OFF
 
     env:
       CC: clang
@@ -71,24 +85,17 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
 
-      - name: Configure
+      - name: Configure & Build via Presets
         run: |
-          cmake -B build \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-            -DZD_JSON_BUILD_TESTS=ON \
-            -DZD_JSON_BUILD_BENCHMARKS=${{ matrix.benchmarks }} \
-            -DZD_JSON_ENABLE_CLANG_TIDY=${{ matrix.clang_tidy }} \
-            -DZD_JSON_ENABLE_SANITIZERS=${{ matrix.sanitizers }}
+          cmake --preset ${{ matrix.preset }} -DZD_JSON_BUILD_TESTS=ON -DZD_JSON_BUILD_BENCHMARKS=${{ matrix.benchmarks }} -DZD_JSON_ENABLE_CLANG_TIDY=${{ matrix.clang_tidy }} -DZD_JSON_ENABLE_SANITIZERS=${{ matrix.sanitizers }}
+          cmake --build --preset ${{ matrix.preset }} --parallel
 
-      - name: Build
-        run: cmake --build build --parallel
-
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
+      - name: Test via Presets
+        run: ctest --preset ${{ matrix.preset }} --output-on-failure
 
       - name: Benchmark Smoke Test
         if: matrix.benchmarks == 'ON'
+        shell: bash
         run: |
           ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
           ./out/bin/zd_json_lexer_benchmarks --benchmark_min_time=0.01s
