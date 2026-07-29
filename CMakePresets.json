@@ -22,6 +22,20 @@
       }
     },
     {
+      "name": "coverage",
+      "displayName": "Code Coverage Build",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/coverage",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ZD_JSON_ENABLE_COVERAGE": "ON",
+        "ZD_JSON_BUILD_TESTS": "ON",
+        "CMAKE_CXX_FLAGS": "-Wno-c2y-extensions"
+      }
+    },
+    {
       "name": "fuzz",
       "displayName": "Clang Fuzzing Build",
       "generator": "Ninja",
@@ -46,6 +60,10 @@
       "configurePreset": "release"
     },
     {
+      "name": "coverage",
+      "configurePreset": "coverage"
+    },
+    {
       "name": "fuzz",
       "configurePreset": "fuzz",
       "targets": [
@@ -65,6 +83,13 @@
     {
       "name": "release",
       "configurePreset": "release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "coverage",
+      "configurePreset": "coverage",
       "output": {
         "outputOnFailure": true
       }
