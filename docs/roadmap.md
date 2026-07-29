@@ -65,7 +65,7 @@
 ## v0.7.0 Testing
 
 * [x] Unit tests
-* [ ] Integration tests
+* [x] Integration tests
 * [ ] Fuzz testing
 
 ---
