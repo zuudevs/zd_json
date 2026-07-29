@@ -48,6 +48,14 @@ zd_json_enable_release_optimizations(${ZD_JSON_LIBRARY_TARGET})
 zd_json_enable_sanitizers(${ZD_JSON_LIBRARY_TARGET})
 zd_json_enable_coverage(${ZD_JSON_LIBRARY_TARGET})
 
+if(ZD_JSON_BUILD_FUZZERS)
+    target_compile_options(${ZD_JSON_LIBRARY_TARGET} PRIVATE
+        -fsanitize-coverage=inline-8bit-counters,pc-table,trace-cmp
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+    )
+endif()
+
 if(CLANG_TIDY_EXE)
     set_target_properties(${ZD_JSON_LIBRARY_TARGET} PROPERTIES
         CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"

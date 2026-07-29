@@ -6,27 +6,11 @@
 # (-fsanitize=fuzzer) with no GCC or MSVC equivalent, so we fail loudly
 # rather than silently skipping the targets if someone enables the
 # option with the wrong compiler.
-#
-# Usage (from the repo root):
-#
-#   cmake -B out/fuzz -DCMAKE_CXX_COMPILER=clang++ -DZD_JSON_BUILD_FUZZERS=ON
-#   cmake --build out/fuzz --target zd_fuzz_parse zd_fuzz_roundtrip
-#
-#   ./out/fuzz/bin/zd_fuzz_parse tests/fuzz/corpus/fuzz_parse
-#   ./out/fuzz/bin/zd_fuzz_roundtrip tests/fuzz/corpus/fuzz_roundtrip
-#
-# Each target also gets a `zd_fuzz_<name>_smoke` CTest entry that runs a
-# single, bounded pass over its seed corpus (-runs=0 with -runs replaced
-# by a real bounded run count below), so `ctest` exercises every seed at
-# least once in CI without requiring anyone to kick off a real fuzzing
-# campaign by hand.
 
-# add_fuzz_target(<name>)
-#
-# Declares executable zd_fuzz_<name> from tests/fuzz/fuzz_<name>.cpp,
-# linked against the zd_json library and instrumented with
-# -fsanitize=fuzzer,address,undefined. Seed corpus is expected at
-# tests/fuzz/corpus/fuzz_<name>/.
+if(ZD_JSON_BUILD_FUZZERS)
+    add_compile_options(-fno-sanitize-coverage=stack-depth)
+endif()
+
 function(add_fuzz_target name)
     if(NOT ZD_JSON_BUILD_FUZZERS)
         return()
@@ -47,6 +31,7 @@ function(add_fuzz_target name)
     set(corpus_dir "${CMAKE_SOURCE_DIR}/tests/fuzz/corpus/fuzz_${name}")
 
     add_executable(${target_name} "${source_file}")
+    set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "zd_fuzz_${name}_run")
 
     target_link_libraries(${target_name} PRIVATE zd_json::zd_json)
 
@@ -62,20 +47,33 @@ function(add_fuzz_target name)
         -g
         -O1
         -fsanitize=fuzzer,address,undefined
+        -fno-sanitize-coverage=stack-depth
         -fno-omit-frame-pointer
     )
     target_link_options(${target_name} PRIVATE
         -fsanitize=fuzzer,address,undefined
+        -fno-sanitize-coverage=stack-depth
     )
+
+    if(WIN32)
+        get_filename_component(CLANG_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        file(GLOB PROFILE_LIBS "${CLANG_BIN_DIR}/../lib/clang/*/lib/windows/clang_rt.profile*.lib")
+        if(PROFILE_LIBS)
+            target_link_libraries(${target_name} PRIVATE ${PROFILE_LIBS})
+        endif()
+
+        file(GLOB ASAN_DLLS "${CLANG_BIN_DIR}/../lib/clang/*/lib/windows/clang_rt.asan_dynamic*.dll")
+        if(ASAN_DLLS)
+            list(GET ASAN_DLLS 0 ASAN_DLL)
+            add_custom_command(TARGET ${target_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${ASAN_DLL}" "$<TARGET_FILE_DIR:${target_name}>/"
+            )
+        endif()
+    endif()
 
     zd_json_enable_warnings(${target_name})
 
-    # A cheap CI-friendly smoke test: run every seed in the corpus
-    # through the harness once (-runs=1 per libFuzzer-selected input via
-    # a plain corpus replay) and fail the build if any of them trips a
-    # sanitizer or crashes. This is NOT a substitute for actually
-    # fuzzing -- it only replays known inputs -- but it keeps the
-    # harnesses themselves honest in normal `ctest` runs.
     if(EXISTS "${corpus_dir}")
         add_test(
             NAME ${target_name}_corpus_replay

@@ -18,3 +18,7 @@ option(ZD_JSON_ENABLE_COVERAGE "Enable coverage" OFF)
 option(ZD_JSON_ENABLE_IPO "Enable interprocedural optimization" ON)
 option(ZD_JSON_ENABLE_NATIVE_OPTIMIZATION "Enable native CPU optimizations" OFF)
 option(ZD_JSON_ENABLE_AVX2 "Enable AVX2 in release" OFF)
+
+if(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_definitions(_DISABLE_STRING_ANNOTATION _DISABLE_VECTOR_ANNOTATION)
+endif()
