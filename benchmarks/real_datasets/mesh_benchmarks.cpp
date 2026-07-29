@@ -12,7 +12,8 @@
 
 using namespace real_datasets;
 
-void Parse_Mesh(benchmark::State& state) {
+void
+    Parse_Mesh(benchmark::State& state) {
     const auto& json = Datasets::GetMesh();
     const auto jsonSize = static_cast<int64_t>(json.size());
 
@@ -26,7 +27,8 @@ void Parse_Mesh(benchmark::State& state) {
     state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-void SerializeCompact_Mesh(benchmark::State& state) {
+void
+    SerializeCompact_Mesh(benchmark::State& state) {
     const auto& json = Datasets::GetMesh();
     auto docResult = zuu::json::Parse(json);
     if (!docResult.has_value()) {
@@ -41,11 +43,14 @@ void SerializeCompact_Mesh(benchmark::State& state) {
         benchmark::ClobberMemory();
     }
 
-    state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * static_cast<int64_t>(json.size()));
-    state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) * static_cast<int64_t>(json.size()));
+    state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) *
+                            static_cast<int64_t>(json.size()));
+    state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) *
+                            static_cast<int64_t>(json.size()));
 }
 
-void SerializePretty_Mesh(benchmark::State& state) {
+void
+    SerializePretty_Mesh(benchmark::State& state) {
     const auto& json = Datasets::GetMesh();
     auto docResult = zuu::json::Parse(json);
     if (!docResult.has_value()) {
@@ -60,11 +65,14 @@ void SerializePretty_Mesh(benchmark::State& state) {
         benchmark::ClobberMemory();
     }
 
-    state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) * static_cast<int64_t>(json.size()));
-    state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) * static_cast<int64_t>(json.size()));
+    state.SetBytesProcessed(static_cast<int64_t>(state.iterations()) *
+                            static_cast<int64_t>(json.size()));
+    state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) *
+                            static_cast<int64_t>(json.size()));
 }
 
-void Tokenize_Mesh(benchmark::State& state) {
+void
+    Tokenize_Mesh(benchmark::State& state) {
     const auto& json = Datasets::GetMesh();
     const auto jsonSize = static_cast<int64_t>(json.size());
 
@@ -78,7 +86,8 @@ void Tokenize_Mesh(benchmark::State& state) {
     state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) * jsonSize);
 }
 
-void Traverse_Mesh(benchmark::State& state) {
+void
+    Traverse_Mesh(benchmark::State& state) {
     const auto& json = Datasets::GetMesh();
     auto docResult = zuu::json::Parse(json);
     if (!docResult.has_value()) {
