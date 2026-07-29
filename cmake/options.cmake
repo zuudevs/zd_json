@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(ZD_JSON_BUILD_TESTS "Build unit tests" ON)
 option(ZD_JSON_BUILD_BENCHMARKS "Build benchmarks" ON)
 option(ZD_JSON_BUILD_EXAMPLES "Build examples" ON)
+option(ZD_JSON_BUILD_FUZZERS "Build libFuzzer-based fuzz targets (requires Clang)" OFF)
 
 option(ZD_JSON_ENABLE_CLANG_FORMAT "Enable clang-format target" ON)
 option(ZD_JSON_ENABLE_CLANG_TIDY "Enable clang-tidy" ON)

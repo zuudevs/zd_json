@@ -144,3 +144,6 @@ add_benchmark_target(json_lexer_benchmarks lexer)
 add_benchmark_target(json_parser_benchmarks parser)
 add_benchmark_target(json_models_benchmarks models)
 add_benchmark_target(json_serializer_benchmarks serializer)
+
+add_fuzz_target(parse)
+add_fuzz_target(roundtrip)

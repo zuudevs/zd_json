@@ -10,6 +10,6 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
 #include "enums/token_type.hpp"
 #include "lexer/tokenizer.hpp"
+#include <gtest/gtest.h>
