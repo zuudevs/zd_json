@@ -66,7 +66,7 @@
 
 * [x] Unit tests
 * [x] Integration tests
-* [ ] Fuzz testing
+* [x] Fuzz testing
 
 ---
 
@@ -76,7 +76,7 @@
 * [x] Add parsing benchmarks
 * [x] Add serialization benchmarks
 * [x] Add DOM benchmarks
-* [ ] Benchmark against real-world datasets
+* [x] Benchmark against real-world datasets
 
 ---
 

@@ -123,6 +123,10 @@ function(add_benchmark_target target_name src_dir)
 			"${CMAKE_SOURCE_DIR}/benchmarks/${src_dir}"
         )
 
+        target_compile_definitions(zd_${target_name} PRIVATE
+            ZD_JSON_SAMPLES_DIR="${CMAKE_SOURCE_DIR}/assets/samples"
+        )
+
         zd_json_enable_warnings(zd_${target_name})
         zd_json_enable_release_optimizations(zd_${target_name})
 
@@ -152,6 +156,7 @@ add_benchmark_target(json_lexer_benchmarks lexer)
 add_benchmark_target(json_parser_benchmarks parser)
 add_benchmark_target(json_models_benchmarks models)
 add_benchmark_target(json_serializer_benchmarks serializer)
+add_benchmark_target(json_real_datasets_benchmarks real_datasets)
 
 add_fuzz_target(parse)
 add_fuzz_target(roundtrip)
