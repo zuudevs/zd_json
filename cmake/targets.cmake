@@ -102,40 +102,57 @@ function(add_test_target type_test target_name src_dir)
 endfunction()
 
 function(add_benchmark_target target_name src_dir)
-    if(ZD_JSON_BUILD_BENCHMARKS)
-		file(GLOB BM_SRCS
-			CONFIGURE_DEPENDS
-			"${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/${src_dir}/*.cpp"
-		)
-
-        add_executable(zd_${target_name}
-            "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
-			"${BM_SRCS}"
-        )
-
-        target_link_libraries(zd_${target_name} PRIVATE
-            zd_json::zd_json
-            benchmark::benchmark
-        )
-        target_include_directories(zd_${target_name} PRIVATE
-            "${CMAKE_SOURCE_DIR}/include"
-            "${CMAKE_SOURCE_DIR}/internal"
-			"${CMAKE_SOURCE_DIR}/benchmarks/${src_dir}"
-        )
-
-        target_compile_definitions(zd_${target_name} PRIVATE
-            ZD_JSON_SAMPLES_DIR="${CMAKE_SOURCE_DIR}/assets/samples"
-        )
-
-        zd_json_enable_warnings(zd_${target_name})
-        zd_json_enable_release_optimizations(zd_${target_name})
-
-        if(CLANG_TIDY_EXE)
-            set_target_properties(zd_${target_name} PROPERTIES
-                CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
-            )
-        endif()
+    if(NOT ZD_JSON_BUILD_BENCHMARKS)
+        return()
     endif()
+
+    file(GLOB BM_SRCS
+        CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/${src_dir}/*.cpp"
+    )
+
+    add_executable(zd_${target_name}
+        "${CMAKE_SOURCE_DIR}/benchmarks/${target_name}.cpp"
+        ${BM_SRCS}
+    )
+
+    target_link_libraries(zd_${target_name} PRIVATE
+        zd_json::zd_json
+        benchmark::benchmark
+    )
+
+    target_include_directories(zd_${target_name} PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_SOURCE_DIR}/internal"
+        "${CMAKE_SOURCE_DIR}/benchmarks/${src_dir}"
+    )
+
+    target_compile_definitions(zd_${target_name} PRIVATE
+        ZD_JSON_SAMPLES_DIR="${CMAKE_SOURCE_DIR}/assets/samples"
+    )
+
+    zd_json_enable_warnings(zd_${target_name})
+    zd_json_enable_release_optimizations(zd_${target_name})
+
+    if(CLANG_TIDY_EXE)
+        set_target_properties(zd_${target_name} PROPERTIES
+            CXX_CLANG_TIDY "${CLANG_TIDY_CMD}"
+        )
+    endif()
+
+	string(TIMESTAMP BM_TIME "%Y%m%d%H%M%S")
+
+    add_custom_target(run_${target_name}
+        COMMAND
+            $<TARGET_FILE:zd_${target_name}>
+            --benchmark_min_warmup_time=2
+            --benchmark_out=${CMAKE_SOURCE_DIR}/out/results/${src_dir}_${BM_TIME}.json
+            --benchmark_out_format=json
+        DEPENDS zd_${target_name}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running benchmark: ${target_name}"
+        VERBATIM
+    )
 endfunction()
 
 add_test_target(unit json_error_test error)
