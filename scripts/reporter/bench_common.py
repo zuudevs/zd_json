@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,20 +26,24 @@ from typing import Any, Optional
 # Paths (mirrors cmake/output.cmake and cmake/targets.cmake conventions)
 # ---------------------------------------------------------------------------
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 OUT_DIR = PROJECT_ROOT / "out"
 BIN_DIR = OUT_DIR / "bin"
 
-RESULTS_DIR = OUT_DIR / "results"
+BENCHMARK_RESULTS_DIR = PROJECT_ROOT / "assets" / "benchmark_results"
+
+RESULTS_DIR = BENCHMARK_RESULTS_DIR / "results"
 RAW_DIR = RESULTS_DIR / "raw"
 CLEAN_DIR = RESULTS_DIR / "clean"
 COMPARISON_DIR = RESULTS_DIR / "comparison"
 
-HISTORY_DIR = OUT_DIR / "history"
+HISTORY_DIR = BENCHMARK_RESULTS_DIR / "history"
 HISTORY_FILE = HISTORY_DIR / "history.json"
 
-REPORTS_DIR = OUT_DIR / "reports"
+REPORTS_DIR = BENCHMARK_RESULTS_DIR / "reports"
 CHARTS_DIR = REPORTS_DIR / "charts"
 
 # suite name -> executable name, matches add_benchmark_target() calls in

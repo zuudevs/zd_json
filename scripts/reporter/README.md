@@ -22,33 +22,32 @@ previous run.
 ## Setup
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install -r scripts/reporter/requirements.txt
 ```
 
 ## Quick start
 
 ```bash
 # Build + run all suites + full pipeline in one go
-python scripts/benchmark_reporter.py --build
+python scripts/reporter/benchmark_reporter.py --build
 
 # Already built? Just run the pipeline
-python scripts/benchmark_reporter.py
+python scripts/reporter/benchmark_reporter.py
 
 # Only some suites, custom regression threshold, fail CI on regression
-python scripts/benchmark_reporter.py --suites parser lexer --threshold 3 --fail-on-regression
+python scripts/reporter/benchmark_reporter.py --suites parser lexer --threshold 3 --fail-on-regression
 ```
 
-Output layout (all under `out/`, matching the existing CMake `out/bin`,
-`out/lib` convention):
+Output layout (all under `assets/benchmark_results/`):
 
 ```
-out/results/raw/<suite>_<timestamp>.json         # raw Google Benchmark JSON, one per suite
-out/results/clean/run_<timestamp>.json           # one run, metadata stripped, suites combined
-out/history/history.json                         # every run ever recorded, oldest first
-out/results/comparison/comparison_<timestamp>.json
-out/reports/report_<timestamp>.md
-out/reports/report_latest.md                     # always the most recent report
-out/reports/charts/<suite>_<timestamp>.png
+assets/benchmark_results/results/raw/<suite>_<timestamp>.json         # raw Google Benchmark JSON, one per suite
+assets/benchmark_results/results/clean/run_<timestamp>.json           # one run, metadata stripped, suites combined
+assets/benchmark_results/history/history.json                         # every run ever recorded, oldest first
+assets/benchmark_results/results/comparison/comparison_<timestamp>.json
+assets/benchmark_results/reports/report_<timestamp>.md
+assets/benchmark_results/reports/report_latest.md                     # always the most recent report
+assets/benchmark_results/reports/charts/<suite>_<timestamp>.png
 ```
 
 ## Running stages individually
@@ -57,11 +56,11 @@ Each stage is also a standalone script, useful for debugging or a
 custom CI flow:
 
 ```bash
-python scripts/run_benchmarks.py --build --suites parser
-python scripts/clean_results.py
-python scripts/combine_history.py
-python scripts/compute_stats.py --threshold 5
-python scripts/generate_report.py
+python scripts/reporter/run_benchmarks.py --build --suites parser
+python scripts/reporter/clean_results.py
+python scripts/reporter/combine_history.py
+python scripts/reporter/compute_stats.py --threshold 5
+python scripts/reporter/generate_report.py
 ```
 
 The first-ever run only establishes the baseline: `compute_stats.py`

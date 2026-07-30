@@ -5,13 +5,13 @@ Stage 1 of the benchmark reporter pipeline.
 
 Runs the zd_json_*_benchmarks executables (built via CMake) with
 --benchmark_out_format=json and stores one raw result file per suite
-under out/results/raw/, all sharing the same batch timestamp so later
+under assets/benchmark_results/results/raw/, all sharing the same batch timestamp so later
 stages can group them into a single "run".
 
 Usage:
-    python scripts/run_benchmarks.py
-    python scripts/run_benchmarks.py --build --preset release
-    python scripts/run_benchmarks.py --suites parser lexer --min-time 0.5
+    python scripts/reporter/run_benchmarks.py
+    python scripts/reporter/run_benchmarks.py --build --preset release
+    python scripts/reporter/run_benchmarks.py --suites parser lexer --min-time 0.5
 """
 
 from __future__ import annotations
@@ -22,7 +22,12 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from bench_common import (
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from scripts.reporter.bench_common import (
     BIN_DIR,
     PROJECT_ROOT,
     RAW_DIR,

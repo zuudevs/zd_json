@@ -4,13 +4,13 @@ combine_history.py
 Stage 3 of the benchmark reporter pipeline.
 
 Appends one cleaned run (produced by clean_results.py) into the
-persistent history file at out/history/history.json, which accumulates
+persistent history file at assets/benchmark_results/history/history.json, which accumulates
 every run ever recorded, oldest first.
 
 Usage:
-    python scripts/combine_history.py                     # combines latest clean run
-    python scripts/combine_history.py --clean-file out/results/clean/run_20260730120000.json
-    python scripts/combine_history.py --force              # overwrite if timestamp already recorded
+    python scripts/reporter/combine_history.py                     # combines latest clean run
+    python scripts/reporter/combine_history.py --clean-file assets/benchmark_results/results/clean/run_20260730120000.json
+    python scripts/reporter/combine_history.py --force              # overwrite if timestamp already recorded
 """
 
 from __future__ import annotations
@@ -20,7 +20,12 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from bench_common import (
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from scripts.reporter.bench_common import (
     CLEAN_DIR,
     HISTORY_FILE,
     PROJECT_ROOT,
@@ -60,7 +65,7 @@ def main(argv: Optional[list[str]] = None) -> Path:
         "--clean-file",
         type=Path,
         default=None,
-        help="Path to a cleaned run JSON (default: most recent file in out/results/clean)",
+        help="Path to a cleaned run JSON (default: most recent file in assets/benchmark_results/results/clean)",
     )
     parser.add_argument(
         "--force",

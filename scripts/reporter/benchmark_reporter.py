@@ -16,23 +16,29 @@ Each stage is also runnable standalone via its own script
 compute_stats.py, generate_report.py) for debugging or CI use.
 
 Usage:
-    python scripts/benchmark_reporter.py                     # full pipeline, uses already-built binaries
-    python scripts/benchmark_reporter.py --build              # configure+build, then full pipeline
-    python scripts/benchmark_reporter.py --suites parser lexer
-    python scripts/benchmark_reporter.py --threshold 3 --fail-on-regression
+    python scripts/reporter/benchmark_reporter.py                     # full pipeline, uses already-built binaries
+    python scripts/reporter/benchmark_reporter.py --build              # configure+build, then full pipeline
+    python scripts/reporter/benchmark_reporter.py --suites parser lexer
+    python scripts/reporter/benchmark_reporter.py --threshold 3 --fail-on-regression
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
-import clean_results
-import combine_history
-import compute_stats
-import generate_report
-import run_benchmarks
-from bench_common import BENCHMARK_SUITES
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+import scripts.reporter.clean_results as clean_results
+import scripts.reporter.combine_history as combine_history
+import scripts.reporter.compute_stats as compute_stats
+import scripts.reporter.generate_report as generate_report
+import scripts.reporter.run_benchmarks as run_benchmarks
+from scripts.reporter.bench_common import BENCHMARK_SUITES
 
 
 def main() -> None:
@@ -86,7 +92,7 @@ def main() -> None:
     generate_report.main(["--comparison-file", str(comparison_path)])
 
     if args.fail_on_regression:
-        from bench_common import read_json
+        from scripts.reporter.bench_common import read_json
 
         comparison = read_json(comparison_path)
         if comparison["summary"]["regressed"] > 0:

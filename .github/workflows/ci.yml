@@ -9,6 +9,7 @@ on:
       - "src/**"
       - "tests/**"
       - "benchmarks/**"
+      - "scripts/**"
       - "cmake/**"
       - "CMakeLists.txt"
       - "CMakePresets.json"
@@ -26,6 +27,7 @@ on:
       - "src/**"
       - "tests/**"
       - "benchmarks/**"
+      - "scripts/**"
       - "cmake/**"
       - "CMakeLists.txt"
       - "CMakePresets.json"
@@ -71,6 +73,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Python
+        if: matrix.benchmarks == 'ON'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python Dependencies
+        if: matrix.benchmarks == 'ON'
+        run: pip install -r scripts/reporter/requirements.txt
+
       - name: Install Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
 
@@ -93,9 +105,14 @@ jobs:
       - name: Test via Presets
         run: ctest --preset ${{ matrix.preset }} --output-on-failure
 
-      - name: Benchmark Smoke Test
+      - name: Run Benchmark Reporter Pipeline
         if: matrix.benchmarks == 'ON'
-        shell: bash
         run: |
-          ./out/bin/zd_json_tokenizer_benchmarks --benchmark_min_time=0.01s
-          ./out/bin/zd_json_lexer_benchmarks --benchmark_min_time=0.01s
+          python scripts/reporter/benchmark_reporter.py --min-time 0.05 --warmup-time 0.1
+
+      - name: Upload Benchmark Results & Reports
+        if: matrix.benchmarks == 'ON'
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: assets/benchmark_results/

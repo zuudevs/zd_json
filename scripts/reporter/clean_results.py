@@ -13,8 +13,8 @@ Each benchmark entry is tagged with its source "suite" so later stages
 can group/filter by suite.
 
 Usage:
-    python scripts/clean_results.py                # cleans the latest batch
-    python scripts/clean_results.py --timestamp 20260730120000
+    python scripts/reporter/clean_results.py                # cleans the latest batch
+    python scripts/reporter/clean_results.py --timestamp 20260730120000
 """
 
 from __future__ import annotations
@@ -25,7 +25,12 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from bench_common import (
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from scripts.reporter.bench_common import (
     CLEAN_DIR,
     PROJECT_ROOT,
     RAW_DIR,
@@ -80,7 +85,7 @@ def main(argv: Optional[list[str]] = None) -> Path:
     parser.add_argument(
         "--timestamp",
         default=None,
-        help="Batch timestamp to clean (default: most recent batch found in out/results/raw)",
+        help="Batch timestamp to clean (default: most recent batch found in assets/benchmark_results/results/raw)",
     )
     args = parser.parse_args(argv)
 

@@ -3,7 +3,7 @@ compute_stats.py
 
 Stage 4 of the benchmark reporter pipeline.
 
-Compares the latest run in out/history/history.json against the
+Compares the latest run in assets/benchmark_results/history/history.json against the
 baseline run. Baseline = the OLDEST run ever recorded (history["runs"][0]),
 per project convention: performance is always tracked relative to the
 first measurement taken, not the previous run.
@@ -20,18 +20,24 @@ Benchmarks only present in one of the two runs are reported separately
 as "new" or "removed".
 
 Usage:
-    python scripts/compute_stats.py
-    python scripts/compute_stats.py --threshold 3.0
-    python scripts/compute_stats.py --current-index -2   # compare an older run instead of latest
+    python scripts/reporter/compute_stats.py
+    python scripts/reporter/compute_stats.py --threshold 3.0
+    python scripts/reporter/compute_stats.py --current-index -2   # compare an older run instead of latest
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 from typing import Optional
 
-from bench_common import (
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from scripts.reporter.bench_common import (
     COMPARISON_DIR,
     HISTORY_FILE,
     PROJECT_ROOT,

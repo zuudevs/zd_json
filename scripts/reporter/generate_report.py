@@ -5,17 +5,17 @@ Stage 5 (final) of the benchmark reporter pipeline.
 
 Reads a comparison JSON (produced by compute_stats.py) and renders:
 
-  * A Markdown report at out/reports/report_<timestamp>.md
-    (also copied to out/reports/report_latest.md for convenience),
+  * A Markdown report at assets/benchmark_results/reports/report_<timestamp>.md
+    (also copied to assets/benchmark_results/reports/report_latest.md for convenience),
     with a summary table and a detailed per-benchmark table.
 
-  * One PNG bar chart per suite at out/reports/charts/<suite>_<timestamp>.png,
+  * One PNG bar chart per suite at assets/benchmark_results/reports/charts/<suite>_<timestamp>.png,
     comparing baseline vs. current real_time per benchmark, using
     matplotlib.
 
 Usage:
-    python scripts/generate_report.py
-    python scripts/generate_report.py --comparison-file out/results/comparison/comparison_20260730120000.json
+    python scripts/reporter/generate_report.py
+    python scripts/reporter/generate_report.py --comparison-file assets/benchmark_results/results/comparison/comparison_20260730120000.json
 """
 
 from __future__ import annotations
@@ -26,12 +26,17 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Optional
 
+# Ensure project root is in sys.path when script is executed directly
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from bench_common import (
+from scripts.reporter.bench_common import (
     CHARTS_DIR,
     COMPARISON_DIR,
     PROJECT_ROOT,
@@ -176,7 +181,7 @@ def main(argv: Optional[list[str]] = None) -> Path:
         "--comparison-file",
         type=Path,
         default=None,
-        help="Path to a comparison JSON (default: most recent file in out/results/comparison)",
+        help="Path to a comparison JSON (default: most recent file in assets/benchmark_results/results/comparison)",
     )
     args = parser.parse_args(argv)
 
