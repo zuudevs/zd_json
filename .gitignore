@@ -21,6 +21,9 @@ fuzz_parse/
 -fuzz_parse/*.json
 -fuzz_parse/*.bin
 
+# Python Generated files & caches
+__pycache__/
+
 # vcpkg
 /vcpkg_installed/
 vcpkg.log
