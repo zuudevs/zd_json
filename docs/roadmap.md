@@ -82,11 +82,11 @@
 
 ## v0.9.0 Benchmark Reporter
 
-* [ ] Save benchmark history
-* [ ] Compare benchmark results
-* [ ] Detect performance regression
-* [ ] Generate Markdown report
-* [ ] Generate charts
+* [x] Save benchmark history
+* [x] Compare benchmark results
+* [x] Detect performance regression
+* [x] Generate Markdown report
+* [x] Generate charts
 
 ---
 
