@@ -4,6 +4,7 @@
 /out/
 /bin/
 /lib/
+assets/benchmark_results/
 
 # CMake generated files & caches
 CMakeCache.txt

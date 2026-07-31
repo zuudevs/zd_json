@@ -38,6 +38,21 @@ from scripts.reporter.bench_common import (
 )
 
 
+def ensure_submodules() -> None:
+    canada_sample = PROJECT_ROOT / "assets" / "samples" / "canada.json"
+    gitmodules = PROJECT_ROOT / ".gitmodules"
+    if not canada_sample.exists() and gitmodules.exists():
+        print("[run_benchmarks] Sample datasets missing. Initializing git submodules...")
+        try:
+            subprocess.run(
+                ["git", "submodule", "update", "--init", "--recursive"],
+                cwd=PROJECT_ROOT,
+                check=True,
+            )
+        except Exception as e:
+            print(f"[run_benchmarks] Warning: Failed to update git submodules: {e}", file=sys.stderr)
+
+
 def build_project(preset: str) -> None:
     print(f"[run_benchmarks] Configuring & building preset '{preset}' ...")
     subprocess.run(
@@ -118,6 +133,7 @@ def main(argv: Optional[list[str]] = None) -> tuple[str, list[Path]]:
     args = parser.parse_args(argv)
 
     ensure_dirs(RAW_DIR)
+    ensure_submodules()
 
     if args.build:
         build_project(args.preset)
