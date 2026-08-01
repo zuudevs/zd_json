@@ -15,12 +15,12 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
-fuzz_roundtrip/
--fuzz_roundtrip/*.json
--fuzz_roundtrip/*.bin
-fuzz_parse/
--fuzz_parse/*.json
--fuzz_parse/*.bin
+fuzz_roundtrip/*
+!fuzz_roundtrip/*.json
+!fuzz_roundtrip/*.bin
+fuzz_parse/*
+!fuzz_parse/*.json
+!fuzz_parse/*.bin
 
 # Python Generated files & caches
 __pycache__/
