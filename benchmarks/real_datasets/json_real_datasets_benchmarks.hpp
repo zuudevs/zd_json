@@ -89,7 +89,8 @@ namespace real_datasets {
                                std::istreambuf_iterator<char>());
         }
     }
-    throw std::runtime_error("Failed to locate dataset file: " + filename);
+    throw std::runtime_error("Failed to locate dataset file: " + filename +
+                             ". Make sure git submodules are checked out ('git submodule update --init --recursive').");
 }
 
 struct Datasets {

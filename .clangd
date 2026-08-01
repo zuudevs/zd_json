@@ -1,3 +1,9 @@
 CompileFlags:
-  CompilationDatabase: build
-  Add: [-I../include, -I../internal, -std=c++23]
+  CompilationDatabase: .
+  Add:
+    - "-Iinclude"
+    - "-Iinternal"
+    - "-I."
+    - "-ID:/Project/zd_json/include"
+    - "-ID:/Project/zd_json/internal"
+    - "-std=c++23"

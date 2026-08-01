@@ -1,0 +1,56 @@
+name: Benchmark Reporter
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "benchmarks/**"
+      - "scripts/**"
+      - ".github/workflows/benchmark.yml"
+
+jobs:
+  benchmark:
+    name: "Run Benchmark Suite"
+    runs-on: ubuntu-latest
+
+    env:
+      CC: clang
+      CXX: clang++
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python Dependencies
+        run: pip install -r scripts/reporter/requirements.txt
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 20
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+
+      - name: Build & Run Benchmark Reporter Pipeline
+        run: |
+          python scripts/reporter/benchmark_reporter.py --build --preset release
+
+      - name: Upload Benchmark Results & Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-reports
+          path: assets/benchmark_results/
