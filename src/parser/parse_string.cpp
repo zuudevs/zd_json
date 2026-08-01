@@ -10,10 +10,14 @@
 
 #include "parser/parse_string.hpp"
 
+#include <bit>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 #include "constants/common.hpp"
+#include "constants/swar.hpp"
+#include "utils/bits.hpp"
 
 namespace zuu::json::parser {
 
@@ -102,6 +106,49 @@ std::expected<std::string, JsonErrc>
     out.reserve(static_cast<size_t>(content_end - ptr));
 
     while (ptr < content_end) {
+        // ---------------------------------------------------------------
+        // SWAR fast path: consume 8 plain ASCII bytes in a single step.
+        //
+        // A byte is "interesting" if it is a backslash (needs escape
+        // handling), a control character (< 0x20, illegal unescaped), or
+        // a non-ASCII byte (>= 0x80, begins a multibyte UTF-8 sequence).
+        // When none of the 8 bytes are interesting, the whole block is
+        // unambiguous ASCII content and can be bulk-appended at once.
+        // When at least one is interesting, countr_zero locates the first
+        // such byte in O(1) and only the clean prefix is bulk-appended
+        // before falling through to the byte-by-byte slow path.
+        // ---------------------------------------------------------------
+        if (content_end - ptr >= static_cast<ptrdiff_t>(constants::kUint8Len)) {
+            uint64_t block{};
+            std::memcpy(&block, ptr, sizeof(block));
+
+            // Detect backslash, control chars (< 0x20), and non-ASCII (>= 0x80).
+            const uint64_t interesting =
+                utils::HasByte(block, constants::kSwarBackslash) |
+                utils::HasLess(block, constants::kSwarSpace) |
+                (block & constants::kSwarMsb);
+
+            if (interesting == 0) {
+                // All 8 bytes are plain ASCII with no special characters.
+                out.append(ptr, constants::kUint8Len);
+                ptr += constants::kUint8Len;
+                continue;
+            }
+
+            // Advance past the clean prefix bytes before the first
+            // interesting byte, then fall through to the slow path below.
+            const size_t skip = static_cast<size_t>(std::countr_zero(interesting) >> 3);
+            out.append(ptr, skip);
+            ptr += skip;
+        }
+
+        if (ptr >= content_end) {
+            break;
+        }
+
+        // ---------------------------------------------------------------
+        // Slow path: process a single byte (or escape sequence).
+        // ---------------------------------------------------------------
         const unsigned char character = static_cast<unsigned char>(*ptr);
 
         if (character == '\\') {
@@ -186,6 +233,10 @@ std::expected<std::string, JsonErrc>
             return std::unexpected{JsonErrc::UnescapedCharacter};
         }
 
+        // Plain byte (ASCII 0x20-0x7E, or a non-ASCII UTF-8 continuation/lead
+        // byte that sits adjacent to a block boundary). The lexer has already
+        // validated that all non-ASCII sequences are well-formed, so we just
+        // copy the byte through without re-checking.
         out.push_back(static_cast<char>(character));
         ++ptr;
     }
